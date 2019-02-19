@@ -1,0 +1,13 @@
+.task-list {
+  list-style: none;
+}
+
+.complete {
+  text-decoration: line-through;
+  opacity: .5;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
