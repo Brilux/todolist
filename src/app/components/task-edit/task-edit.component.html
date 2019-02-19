@@ -1,0 +1,14 @@
+<div>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <input matInput formControlName="task" placeholder="Enter the title of ToDo:">
+    </mat-form-field>
+    <label>
+      <mat-form-field>
+        <textarea matInput formControlName="description" cols="10" rows="1" placeholder="Enter description (not necessary)"></textarea>
+      </mat-form-field>
+    </label>
+  </form>
+  <button mat-raised-button [routerLink]="[ '/toDo' ]">Back</button>
+  <button mat-raised-button (click)="editTask()" [routerLink]="[ '/toDo' ]" [disabled]="!form.valid">Update</button>
+</div>

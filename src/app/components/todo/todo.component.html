@@ -1,0 +1,37 @@
+<div class="wrapper">
+  <p *ngIf="!tasks.length">
+    Hi! Welcome to your ToDo!
+    You don't have any Todos. You can add it using button
+  </p>
+  <button mat-raised-button color="primary" (click)="isCreate = !isCreate">Create new ToDo</button>
+  <form class="form-container" *ngIf="isCreate" [formGroup]="form" (ngSubmit)="createTask()">
+    <mat-form-field>
+      <input matInput formControlName="task" placeholder="Enter the title of ToDo">
+    </mat-form-field>
+    <mat-form-field>
+        <textarea matInput formControlName="description" cols="10" rows="1"
+                  placeholder=" Enter description (not necessary)"></textarea>
+    </mat-form-field>
+    <button mat-raised-button color="primary" [disabled]="!form.valid">Create ToDo</button>
+  </form>
+</div>
+
+<div>
+  <ul class="task-list">
+    <mat-card *ngFor="let task of taskFiltered(); let taskIndex = index"
+              [class.complete]="task.complete">
+      <button mat-icon-button *ngIf="!task.complete" [routerLink]="[ '/task-edit' ]" (click)="indexForEdit(taskIndex)">
+        <mat-icon>border_color</mat-icon>
+      </button>
+      <button mat-icon-button (click)="deleteTask(taskIndex)">
+        <mat-icon>clear</mat-icon>
+      </button>
+      <span (click)="toggle(task, taskIndex)">{{task.title + ' ' + task.description}}Time: {{task.date}}</span>
+    </mat-card>
+  </ul>
+  <div *ngIf="tasks.length">
+    <button mat-icon-button color="primary" (click)="filter='all'">All</button>
+    <button mat-icon-button color="primary" (click)="filter='active'">Active</button>
+    <button mat-icon-button color="primary" (click)="filter='completed'">Completed</button>
+  </div>
+</div>
