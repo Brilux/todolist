@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Task } from '../../models/todo';
 import { TodoService } from '../../services/todo.service';
+import { LocalstorageService } from '../../services/localstorage.service';
 
 @Component({
   selector: 'app-todo',
@@ -10,7 +11,7 @@ import { TodoService } from '../../services/todo.service';
 })
 export class TodoComponent implements OnInit {
 
-  constructor(private todoService: TodoService) {
+  constructor(private todoService: TodoService, private localstorageService: LocalstorageService) {
   }
 
   isCreate = false;
@@ -29,7 +30,7 @@ export class TodoComponent implements OnInit {
 
   public toggle(task: Task, taskIndex: number): void {
     task.complete = !task.complete;
-    this.todoService.toggleLocal(task, taskIndex);
+    this.localstorageService.toggleLocal(task, taskIndex);
   }
 
   public createTask(): void {
@@ -44,26 +45,29 @@ export class TodoComponent implements OnInit {
       complete: false,
       date: `${day} / ${month} / ${hour}:${minutes}`
     });
+    this.localstorageService.addTask();
     this.form.reset();
   }
 
   public getLocalTasks(): void {
-    this.todoService.createLocalTasks();
+    this.localstorageService.createLocalTasks();
   }
 
   public deleteTask(index: number): void {
     this.todoService.deleteTask(index);
+    this.localstorageService.deleteTask(index);
   }
 
   public taskFiltered(): Task[] {
-    if (this.filter === 'all') {
-      return this.tasks;
-    } else if (this.filter === 'active') {
-      return this.tasks.filter(task => !task.complete);
-    } else if (this.filter === 'completed') {
-      return this.tasks.filter(task => task.complete);
-    } else {
-      return this.tasks;
+    switch (this.filter) {
+      case 'all':
+        return this.tasks;
+      case 'active':
+        return this.tasks.filter(task => !task.complete);
+      case 'completed':
+        return this.tasks.filter(task => task.complete);
+      default:
+        return this.tasks;
     }
   }
 
