@@ -1,7 +1,7 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { TodoService } from '../../services/todo.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { LocalstorageService } from "../../services/localstorage.service";
+import { LocalstorageService } from '../../services/localstorage.service';
 
 @Component({
   selector: 'app-task-edit',
@@ -13,12 +13,12 @@ export class TaskEditComponent implements OnInit, OnChanges {
   constructor(private todoService: TodoService, private localstorageService: LocalstorageService) {
   }
 
-  public form: FormGroup = new FormGroup({
+  private form: FormGroup = new FormGroup({
     task: new FormControl(null, Validators.required),
     description: new FormControl()
   });
 
-  public editTask(): void {
+  private editTask(): void {
     const time = new Date();
     const day = time.getDate();
     const month = time.getMonth() + 1;

@@ -11,3 +11,60 @@
   display: flex;
   flex-direction: column;
 }
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-title {
+  font-size: 25px;
+}
+
+.create-button {
+  margin-bottom: 10px;
+}
+
+.task-item-container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+}
+
+.task-list-container {
+  padding: initial;
+}
+
+.task-list {
+  margin: 15px;
+}
+
+.task-icon-container {
+  display: flex;
+}
+
+.task-icon {
+  margin: 0 auto;
+}
+
+.task-item-title {
+  font-weight: bold;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.task-item-description {
+  word-wrap: break-word;
+}
+
+.task-item-time {
+  padding-top: 10px;
+  text-align: center;
+}
+
+.task-filter-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

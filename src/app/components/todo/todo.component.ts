@@ -19,21 +19,21 @@ export class TodoComponent implements OnInit {
 
   public tasks: Task[] = [];
 
-  public form: FormGroup = new FormGroup({
+  private form: FormGroup = new FormGroup({
     task: new FormControl(null, Validators.required),
     description: new FormControl()
   });
 
-  public indexForEdit(taskIndex) {
+  private indexForEdit(taskIndex) {
     this.todoService.indexForEdit(taskIndex);
   }
 
-  public toggle(task: Task, taskIndex: number): void {
+  private toggle(task: Task, taskIndex: number): void {
     task.complete = !task.complete;
     this.localstorageService.toggleLocal(task, taskIndex);
   }
 
-  public createTask(): void {
+  private createTask(): void {
     const time = new Date();
     const day = time.getDate();
     const month = time.getMonth() + 1;
@@ -49,16 +49,12 @@ export class TodoComponent implements OnInit {
     this.form.reset();
   }
 
-  public getLocalTasks(): void {
-    this.localstorageService.createLocalTasks();
-  }
-
-  public deleteTask(index: number): void {
+  private deleteTask(index: number): void {
     this.todoService.deleteTask(index);
     this.localstorageService.deleteTask(index);
   }
 
-  public taskFiltered(): Task[] {
+  private taskFiltered(): Task[] {
     switch (this.filter) {
       case 'all':
         return this.tasks;
@@ -74,7 +70,7 @@ export class TodoComponent implements OnInit {
   ngOnInit() {
     this.getTasks();
     if (localStorage.getItem('tasks') != null && !this.tasks.length) {
-      this.getLocalTasks();
+      this.localstorageService.createLocalTasks();
     }
   }
 

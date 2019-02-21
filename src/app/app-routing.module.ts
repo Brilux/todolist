@@ -6,7 +6,7 @@ import { TaskEditComponent } from './components/task-edit/task-edit.component';
 const routes: Routes = [
   { path: '', component: TodoComponent },
   { path: 'task-edit', component: TaskEditComponent },
-  { path: 'toDo', component: TodoComponent }
+  { path: 'todo', component: TodoComponent }
 ];
 
 @NgModule({
