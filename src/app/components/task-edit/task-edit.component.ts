@@ -13,7 +13,7 @@ export class TaskEditComponent implements OnInit, OnChanges {
   constructor(private todoService: TodoService, private localstorageService: LocalstorageService) {
   }
 
-  private form: FormGroup = new FormGroup({
+  public form: FormGroup = new FormGroup({
     task: new FormControl(null, Validators.required),
     description: new FormControl()
   });
