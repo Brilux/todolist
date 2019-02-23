@@ -1,3 +1,23 @@
-<p>
-  weather works!
-</p>
+<div *ngIf="city">
+  <h1>City: {{city}}</h1>
+  <p>Temperature: {{temp}} °C</p>
+</div>
+
+<button mat-raised-button color="primary" (click)="toggleCity()">Add city</button>
+<button mat-raised-button color="primary" (click)="toggleLocation()">Add custom coord</button>
+<form class="form-container" *ngIf="cityToggle" [formGroup]="cityForm" (ngSubmit)="createTask()">
+  <mat-form-field>
+    <input matInput formControlName="task" placeholder="Enter the name of City">
+  </mat-form-field>
+  <button mat-raised-button color="primary" [disabled]="!cityForm.valid">Find city</button>
+</form>
+<form class="form-container" *ngIf="locationToggle" [formGroup]="coordForm" (ngSubmit)="createTask()">
+  <mat-form-field>
+    <input matInput formControlName="lat" placeholder="Enter the lat">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput formControlName="lon" placeholder="Enter the lon">
+  </mat-form-field>
+  <button mat-raised-button color="primary" [disabled]="!coordForm.valid">Enter coordinates</button>
+</form>
+

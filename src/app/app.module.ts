@@ -10,7 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TaskEditComponent } from './components/task-edit/task-edit.component';
 import { WeatherComponent } from './components/weather/weather.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
-    HttpClientModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

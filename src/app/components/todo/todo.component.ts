@@ -19,7 +19,7 @@ export class TodoComponent implements OnInit {
 
   public tasks: Task[] = [];
 
-  private form: FormGroup = new FormGroup({
+  public form: FormGroup = new FormGroup({
     task: new FormControl(null, Validators.required),
     description: new FormControl()
   });
