@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../../services/weather.service';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-weather',
@@ -16,10 +16,12 @@ export class WeatherComponent implements OnInit {
   city: string;
   temp: string;
   cityToggle: boolean;
-  locationToggle: boolean;
+  coordToggle: boolean;
+  lat: number;
+  lon: number;
 
   public cityForm: FormGroup = new FormGroup({
-    task: new FormControl(null, Validators.required),
+    city: new FormControl(null, Validators.required),
   });
 
   public coordForm: FormGroup = new FormGroup({
@@ -27,9 +29,10 @@ export class WeatherComponent implements OnInit {
     lon: new FormControl(null, Validators.required),
   });
 
+
   toggleCity() {
-    if (this.locationToggle === true) {
-      this.locationToggle = !this.locationToggle;
+    if (this.coordToggle === true) {
+      this.coordToggle = !this.coordToggle;
       this.cityToggle = !this.cityToggle;
     } else {
       this.cityToggle = !this.cityToggle;
@@ -39,21 +42,25 @@ export class WeatherComponent implements OnInit {
   toggleLocation() {
     if (this.cityToggle === true) {
       this.cityToggle = !this.cityToggle;
-      this.locationToggle = !this.locationToggle;
+      this.coordToggle = !this.coordToggle;
     } else {
-      this.locationToggle = !this.locationToggle;
+      this.coordToggle = !this.coordToggle;
     }
   }
 
-  private save() {
-    let a = {
-      city: this.city
-    };
-
+  private saveCity() {
+    this.city = this.cityForm.value.city;
+    this.takeWeatherCity(this.city);
   }
 
-  public takeWeather() {
-    this.weatherService.searchWeatherData('Cherkasy').subscribe(response => {
+  private saveCoord() {
+    this.lat = this.coordForm.value.lat;
+    this.lon = this.coordForm.value.lon;
+    this.takeWeatherCoord(this.lat, this.lon);
+  }
+
+  public takeWeatherCity(city) {
+    this.weatherService.searchWeatherDataByCity(city).subscribe(response => {
       this.city = response.name;
       this.temp = response.main.temp.toFixed();
       localStorage.setItem('weather', JSON.stringify(response));
@@ -61,28 +68,31 @@ export class WeatherComponent implements OnInit {
     });
   }
 
-  public success(pos) {
-    const crd = pos.coords;
-
-    console.log('Your current position is:');
-    console.log(`Latitude : ${crd.latitude}`);
-    console.log(`Longitude: ${crd.longitude}`);
-    console.log(`More or less ${crd.accuracy} meters.`);
+  public takeWeatherCoord(lat, lon) {
+    this.weatherService.searchWeatherDataByCoord(lat, lon).subscribe(response => {
+      this.city = response.name;
+      this.temp = response.main.temp.toFixed();
+      localStorage.setItem('weather', JSON.stringify(response));
+      localStorage.setItem('coord', JSON.stringify([lat, lon]));
+      console.log(response);
+    });
   }
 
-  public error(err) {
+  private error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
   ngOnInit() {
-    navigator.geolocation.getCurrentPosition(this.success, this.error);
-    if (localStorage.getItem('weather') != null) {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const crd = pos.coords;
+      localStorage.setItem('coord', JSON.stringify([crd.latitude, crd.longitude]));
+    }, this.error.bind(this));
+    if (localStorage.getItem('weather') != null || localStorage.getItem('coord') != null) {
       const localResponse = JSON.parse(localStorage.getItem('weather'));
       this.city = localResponse.name;
       this.temp = localResponse.main.temp.toFixed();
     } else {
-      this.takeWeather();
+      this.takeWeatherCity('Cherkasy');
     }
   }
-
 }
