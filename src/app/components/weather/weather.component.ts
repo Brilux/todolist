@@ -30,7 +30,7 @@ export class WeatherComponent implements OnInit {
   });
 
 
-  toggleCity() {
+  private toggleCity(): void {
     if (this.coordToggle === true) {
       this.coordToggle = !this.coordToggle;
       this.cityToggle = !this.cityToggle;
@@ -39,7 +39,7 @@ export class WeatherComponent implements OnInit {
     }
   }
 
-  toggleLocation() {
+  private toggleLocation(): void {
     if (this.cityToggle === true) {
       this.cityToggle = !this.cityToggle;
       this.coordToggle = !this.coordToggle;
@@ -48,37 +48,35 @@ export class WeatherComponent implements OnInit {
     }
   }
 
-  private saveCity() {
+  private saveCity(): void {
     this.city = this.cityForm.value.city;
     this.takeWeatherCity(this.city);
   }
 
-  private saveCoord() {
+  private saveCoord(): void {
     this.lat = this.coordForm.value.lat;
     this.lon = this.coordForm.value.lon;
     this.takeWeatherCoord(this.lat, this.lon);
   }
 
-  public takeWeatherCity(city) {
+  private takeWeatherCity(city: string): void {
     this.weatherService.searchWeatherDataByCity(city).subscribe(response => {
       this.city = response.name;
       this.temp = response.main.temp.toFixed();
       localStorage.setItem('weather', JSON.stringify(response));
-      console.log(response);
     });
   }
 
-  public takeWeatherCoord(lat, lon) {
+  private takeWeatherCoord(lat: number, lon: number): void {
     this.weatherService.searchWeatherDataByCoord(lat, lon).subscribe(response => {
       this.city = response.name;
       this.temp = response.main.temp.toFixed();
       localStorage.setItem('weather', JSON.stringify(response));
       localStorage.setItem('coord', JSON.stringify([lat, lon]));
-      console.log(response);
     });
   }
 
-  private error(err) {
+  private error(err): void {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
