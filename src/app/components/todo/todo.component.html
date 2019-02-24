@@ -3,8 +3,10 @@
     Hi! Welcome to your ToDo!
     You don't have any Todos. You can add it using button
   </p>
-  <button class="create-button" mat-raised-button color="primary" (click)="isCreate = !isCreate">Create new ToDo
-  </button>
+  <div class="button-container">
+    <button class="create-button" mat-raised-button color="primary" (click)="isCreate = !isCreate">Create new ToDo
+    </button>
+  </div>
   <form class="form-container" *ngIf="isCreate" [formGroup]="form" (ngSubmit)="createTask()">
     <mat-form-field>
       <input matInput formControlName="task" placeholder="Enter the title of ToDo">
@@ -13,7 +15,9 @@
         <textarea matInput formControlName="description"
                   placeholder="Enter description (not necessary)"></textarea>
     </mat-form-field>
-    <button mat-raised-button color="primary" [disabled]="!form.valid">Create ToDo</button>
+    <div class="button-container">
+      <button class="create-button" mat-raised-button color="primary" [disabled]="!form.valid">Create ToDo</button>
+    </div>
   </form>
 </div>
 

@@ -10,6 +10,9 @@
 .form-container {
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
+  /*max-width: 1000px;*/
+  min-width: 1000px;
 }
 
 .wrapper {
@@ -19,10 +22,22 @@
 
 .welcome-title {
   font-size: 25px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
 }
 
 .create-button {
+  margin-top: 10px;
   margin-bottom: 10px;
+  /*max-width: 250px;*/
+  width: 200px;
+  height: 70px;
 }
 
 .task-item-container {
@@ -56,6 +71,7 @@
 
 .task-item-description {
   word-wrap: break-word;
+  text-align: center;
 }
 
 .task-item-time {
@@ -67,4 +83,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
