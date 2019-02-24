@@ -3,20 +3,27 @@
   <p>Temperature: {{temp}} °C</p>
 </div>
 
-<button mat-raised-button color="primary" (click)="toggleCity()">Add city</button>
-<button mat-raised-button color="primary" (click)="toggleLocation()">Add custom coord</button>
+<div class="weather-buttons">
+  <button mat-raised-button color="primary" (click)="toggleCity()">Add city</button>
+  <button mat-raised-button color="primary" (click)="toggleLocation()">Add coordinates</button>
+</div>
 <form class="form-container" *ngIf="cityToggle" [formGroup]="cityForm" (ngSubmit)="saveCity()">
-  <mat-form-field>
+  <mat-form-field style="display: block">
     <input matInput formControlName="city" placeholder="Enter the name of City">
   </mat-form-field>
-  <button mat-raised-button color="primary" [disabled]="!cityForm.valid">Find city</button>
+  <div class="button-container">
+    <button class="city-button" mat-raised-button color="primary" [disabled]="!cityForm.valid">Find city</button>
+  </div>
 </form>
 <form class="form-container" *ngIf="coordToggle" [formGroup]="coordForm" (ngSubmit)="saveCoord()">
-  <mat-form-field>
+  <mat-form-field style="display: block">
     <input matInput formControlName="lat" placeholder="Enter the lat">
   </mat-form-field>
-  <mat-form-field>
+  <mat-form-field style="display: block">
     <input matInput formControlName="lon" placeholder="Enter the lon">
   </mat-form-field>
-  <button mat-raised-button color="primary" [disabled]="!coordForm.valid">Enter coordinates</button>
+  <div class="button-container">
+    <button class="coord-button" mat-raised-button color="primary" [disabled]="!coordForm.valid">Enter coordinates
+    </button>
+  </div>
 </form>
