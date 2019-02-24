@@ -11,15 +11,13 @@ import { map } from 'rxjs/operators';
 export class WeatherService {
 
   apiKey = 'e38fa7171a76cd46d84400b96b366241';
-  url: string;
+  url = 'http://api.openweathermap.org/data/2.5/weather?';
 
-  constructor(private http: HttpClient) {
-    this.url = 'http://api.openweathermap.org/data/2.5/weather?q=';
-  }
+  constructor(private http: HttpClient) {}
 
 
-  searchWeatherData(cityName: string): Observable<any> {
-    return this.http.get(this.url + cityName + '&APPID=' + this.apiKey + '&units=metric').pipe(
+  public searchWeatherDataByCity(cityName: string): Observable<any> {
+    return this.http.get(this.url + 'q=' + cityName + '&APPID=' + this.apiKey + '&units=metric').pipe(
       map(response => {
         if (!response) {
           throw new Error('Getting weather error!');
@@ -29,5 +27,18 @@ export class WeatherService {
       }),
     );
   }
+
+  public searchWeatherDataByCoord(lat: number, lon: number): Observable<any> {
+    return this.http.get(this.url + 'lat=' + lat + '&lon=' + lon + '&APPID=' + this.apiKey + '&units=metric').pipe(
+      map(response => {
+        if (!response) {
+          throw new Error('Getting weather error!');
+        } else {
+          return response;
+        }
+      }),
+    );
+  }
+
 }
 
