@@ -17,7 +17,7 @@ export class WeatherService {
 
 
   public searchWeatherDataByCity(cityName: string): Observable<any> {
-    return this.http.get(this.url + 'q=' + cityName + '&APPID=' + this.apiKey + '&units=metric').pipe(
+    return this.http.get(`${this.url}q=${cityName}&APPID=${this.apiKey}&units=metric`).pipe(
       map(response => {
         if (!response) {
           throw new Error('Getting weather error!');
@@ -29,7 +29,7 @@ export class WeatherService {
   }
 
   public searchWeatherDataByCoord(lat: number, lon: number): Observable<any> {
-    return this.http.get(this.url + 'lat=' + lat + '&lon=' + lon + '&APPID=' + this.apiKey + '&units=metric').pipe(
+    return this.http.get(`${this.url}lat=${lat}&lon=${lon}&APPID=${this.apiKey}&units=metric`).pipe(
       map(response => {
         if (!response) {
           throw new Error('Getting weather error!');
