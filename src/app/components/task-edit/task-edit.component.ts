@@ -18,7 +18,7 @@ export class TaskEditComponent implements OnInit, OnChanges {
     description: new FormControl()
   });
 
-  private editTask(): void {
+  public editTask(): void {
     const time = new Date();
     const day = time.getDate();
     const month = time.getMonth() + 1;

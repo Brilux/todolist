@@ -30,7 +30,7 @@ export class WeatherComponent implements OnInit {
   });
 
 
-  private toggleCity(): void {
+  public toggleCity(): void {
     if (this.coordToggle === true) {
       this.coordToggle = !this.coordToggle;
       this.cityToggle = !this.cityToggle;
@@ -39,7 +39,7 @@ export class WeatherComponent implements OnInit {
     }
   }
 
-  private toggleLocation(): void {
+  public toggleLocation(): void {
     if (this.cityToggle === true) {
       this.cityToggle = !this.cityToggle;
       this.coordToggle = !this.coordToggle;

@@ -54,7 +54,7 @@ export class TodoComponent implements OnInit {
     this.localstorageService.deleteTask(index);
   }
 
-  private taskFiltered(): Task[] {
+  public taskFiltered(): Task[] {
     switch (this.filter) {
       case 'all':
         return this.tasks;
