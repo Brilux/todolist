@@ -34,16 +34,12 @@ export class TodoComponent implements OnInit {
   }
 
   private createTask(): void {
-    const time = new Date();
-    const day = time.getDate();
-    const month = time.getMonth() + 1;
-    const hour = time.getHours();
-    const minutes = time.getMinutes();
+    const createTime: number = Date.now();
     this.todoService.addTask({
       title: this.form.value.task,
       description: this.form.value.description || '',
       complete: false,
-      date: `${day} / ${month} / ${hour}:${minutes}`
+      date: `${createTime}`
     });
     this.localstorageService.addTask();
     this.form.reset();
