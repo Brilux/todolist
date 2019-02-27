@@ -1,5 +1,7 @@
 .task-list {
   list-style: none;
+  margin: 15px;
+  display: flex;
 }
 
 .complete {
@@ -7,12 +9,25 @@
   opacity: .5;
 }
 
+.task-checkbox-container {
+  margin: 0 auto;
+  align-self: center;
+}
+
+.task-checkbox {
+  height: 15px;
+  width: 15px;
+  background-color: #eee;
+}
+
+.task-checkbox-container input:checked ~ .task-checkbox {
+  background-color: #2196F3;
+}
+
 .form-container {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  /*max-width: 1000px;*/
-  min-width: 1000px;
 }
 
 .wrapper {
@@ -35,7 +50,6 @@
 .create-button {
   margin-top: 10px;
   margin-bottom: 10px;
-  /*max-width: 250px;*/
   width: 200px;
   height: 70px;
 }
@@ -50,16 +64,13 @@
   padding: initial;
 }
 
-.task-list {
-  margin: 15px;
-}
-
 .task-icon-container {
   display: flex;
 }
 
 .task-icon {
   margin: 0 auto;
+  align-self: center;
 }
 
 .task-item-title {
