@@ -9,14 +9,16 @@
   opacity: .5;
 }
 
-.task-checkbox-container {
-  margin: 0 auto;
-  align-self: center;
-}
+/*.task-checkbox-container {*/
+  /*margin: 0 auto;*/
+  /*align-self: center;*/
+/*}*/
 
 .task-checkbox {
-  height: 15px;
-  width: 15px;
+  /*height: 15px;*/
+  /*width: 15px;*/
+  margin: 0 auto;
+  align-self: center;
   background-color: #eee;
 }
 
