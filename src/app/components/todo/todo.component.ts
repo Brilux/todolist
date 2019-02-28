@@ -24,30 +24,35 @@ export class TodoComponent implements OnInit {
     description: new FormControl()
   });
 
-  private indexForEdit(taskIndex) {
-    this.todoService.indexForEdit(taskIndex);
+  private findToDo(taskIndex) {
+    return this.tasks.find(todo => todo.id === this.tasks[taskIndex].id);
+  }
+
+  private findToDoForEdit(taskIndex) {
+    this.localstorageService.findToDoForEdit(this.findToDo(taskIndex));
+    this.todoService.findToDoForEdit(this.findToDo(taskIndex));
   }
 
   private toggle(task: Task, taskIndex: number): void {
     task.complete = !task.complete;
-    this.localstorageService.toggleLocal(task, taskIndex);
+    const findIndex = this.tasks.findIndex(todo => todo.id === this.tasks[taskIndex].id);
+    this.localstorageService.toggleLocal(task, findIndex);
   }
 
   private createTask(): void {
-    const createTime: number = Date.now();
+    const createId: number = Date.now();
     this.todoService.addTask({
+      id: createId,
       title: this.form.value.task,
-      description: this.form.value.description || '',
-      complete: false,
-      date: `${createTime}`
+      complete: false
     });
     this.localstorageService.addTask();
     this.form.reset();
   }
 
-  private deleteTask(index: number): void {
-    this.todoService.deleteTask(index);
-    this.localstorageService.deleteTask(index);
+  private deleteTask(taskIndex): void {
+    this.localstorageService.deleteTask(this.findToDo(taskIndex));
+    this.todoService.deleteTask(this.findToDo(taskIndex));
   }
 
   public taskFiltered(): Task[] {
