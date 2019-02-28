@@ -19,13 +19,14 @@ export class TaskEditComponent implements OnInit, OnChanges {
   });
 
   public editTask(): void {
-    const createTime: number = Date.now();
+    const createId: number = Date.now();
     const tasks = JSON.parse(localStorage.getItem('tasks'));
+    const indexForEdit = tasks.findIndex(todo => todo.id === this.todoService.todoForEdit.id);
     const editedTask = {
+      id: createId,
       title: this.form.value.task,
-      description: this.form.value.description || tasks[this.todoService.taskIndexForEdit].description || '',
-      complete: false,
-      date: `${createTime}`
+      description: this.form.value.description || tasks[indexForEdit].description || '',
+      complete: false
     };
     this.todoService.editTask(editedTask);
     this.localstorageService.editTask(editedTask);

@@ -23,11 +23,11 @@
               [class.complete]="task.complete">
 
       <mat-checkbox type="checkbox" class="task-checkbox" (click)="toggle(task, taskIndex)" [checked]="task.complete"></mat-checkbox>
-      <div class="task-item-container" [routerLink]="[ '/task-edit' ]"
-           (click)="indexForEdit(taskIndex)">
+      <div class="task-item-container" (click)="findToDoForEdit(taskIndex)"
+           [routerLink]="[ '/task-edit' ]">
         <span class="task-item-title">{{task.title}}</span>
         <span class="task-item-description">{{task.description}}</span>
-        <span class="task-item-time">Time: {{task.date | date: 'd LLL HH:mm'}}</span>
+        <span class="task-item-time">Time: {{task.id | date: 'd LLL HH:mm'}}</span>
       </div>
       <button class="task-icon" mat-icon-button (click)="deleteTask(taskIndex)">
         <mat-icon>clear</mat-icon>

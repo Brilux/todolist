@@ -9,6 +9,12 @@ export class LocalstorageService {
 
   constructor(private todoService: TodoService) { }
 
+  todoForEdit: any;
+
+  public findToDoForEdit(todoForEdit) {
+    return this.todoForEdit = todoForEdit;
+  }
+
   private getTasks() {
     return JSON.parse(localStorage.getItem('tasks'));
   }
@@ -34,15 +40,17 @@ export class LocalstorageService {
     this.setTasks(this.todoService.tasks);
   }
 
-  public deleteTask(taskIndex: number): void {
+  public deleteTask(todoForDelete): void {
     const tasks: Task[] = this.getTasks();
-    tasks.splice(taskIndex, 1);
+    const indexForDel = tasks.findIndex(todo => todo.id === todoForDelete.id);
+    tasks.splice(indexForDel, 1);
     this.setTasks(tasks);
   }
 
   public editTask(task: Task): void {
     const tasks: Task[] = this.getTasks();
-    tasks.splice(this.todoService.taskIndexForEdit, 1, task);
+    const indexForDel = tasks.findIndex(todo => todo.id === this.todoForEdit.id);
+    tasks.splice(indexForDel, 1, task);
     this.setTasks(tasks);
   }
 }

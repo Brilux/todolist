@@ -12,22 +12,24 @@ export class TodoService {
 
   public tasks: Task[] = [];
 
-  taskIndexForEdit: number;
+  todoForEdit: any;
 
-  public indexForEdit(taskIndex) {
-    return this.taskIndexForEdit = taskIndex;
+  public findToDoForEdit(todoForEdit) {
+    return this.todoForEdit = todoForEdit;
   }
 
   public addTask(task: Task): void {
     this.tasks.unshift(task);
   }
 
-  public deleteTask(taskIndex: number): void {
-    this.tasks.splice(taskIndex, 1);
+  public deleteTask(todoForDelete): void {
+    const indexForDel = this.tasks.findIndex(todo => todo.id === todoForDelete.id);
+    this.tasks.splice(indexForDel, 1);
   }
 
   public editTask(task: Task): void {
-    this.tasks.splice(this.taskIndexForEdit, 1, task);
+    const indexForDel = this.tasks.findIndex(todo => todo.id === this.todoForEdit.id);
+    this.tasks.splice(indexForDel, 1, task);
   }
 
   getTasks(): Observable<Task[]> {
