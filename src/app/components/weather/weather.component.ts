@@ -14,81 +14,46 @@ export class WeatherComponent implements OnInit {
   }
 
   city: string;
-  temp: string;
+  temp: number;
+  tempMin: number;
+  tempMax: number;
+  icon: string;
+  weatherMain: string;
+  weatherDesc: string;
   cityToggle: boolean;
-  coordToggle: boolean;
-  lat: number;
-  lon: number;
 
   public cityForm: FormGroup = new FormGroup({
     city: new FormControl(null, Validators.required),
   });
-
-  public coordForm: FormGroup = new FormGroup({
-    lat: new FormControl(null, Validators.required),
-    lon: new FormControl(null, Validators.required),
-  });
-
-
-  public toggleCity(): void {
-    if (this.coordToggle === true) {
-      this.coordToggle = !this.coordToggle;
-      this.cityToggle = !this.cityToggle;
-    } else {
-      this.cityToggle = !this.cityToggle;
-    }
-  }
-
-  public toggleLocation(): void {
-    if (this.cityToggle === true) {
-      this.cityToggle = !this.cityToggle;
-      this.coordToggle = !this.coordToggle;
-    } else {
-      this.coordToggle = !this.coordToggle;
-    }
-  }
 
   private saveCity(): void {
     this.city = this.cityForm.value.city;
     this.takeWeatherCity(this.city);
   }
 
-  private saveCoord(): void {
-    this.lat = this.coordForm.value.lat;
-    this.lon = this.coordForm.value.lon;
-    this.takeWeatherCoord(this.lat, this.lon);
-  }
-
-  private takeWeatherCity(city: string): void {
+  public takeWeatherCity(city: string): void {
     this.weatherService.searchWeatherDataByCity(city).subscribe(response => {
       this.city = response.name;
       this.temp = response.main.temp.toFixed();
+      this.tempMin = Math.floor(response.main.temp_min);
+      this.tempMax = Math.ceil(response.main.temp_max);
+      this.weatherMain = response.weather[0].main;
+      this.weatherDesc = response.weather[0].description;
+      this.icon = `http://openweathermap.org/img/w/${response.weather[0].icon}.png`;
       localStorage.setItem('weather', JSON.stringify(response));
     });
-  }
-
-  private takeWeatherCoord(lat: number, lon: number): void {
-    this.weatherService.searchWeatherDataByCoord(lat, lon).subscribe(response => {
-      this.city = response.name;
-      this.temp = response.main.temp.toFixed();
-      localStorage.setItem('weather', JSON.stringify(response));
-      localStorage.setItem('coord', JSON.stringify([lat, lon]));
-    });
-  }
-
-  private error(err): void {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
   ngOnInit() {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const crd = pos.coords;
-      localStorage.setItem('coord', JSON.stringify([crd.latitude, crd.longitude]));
-    }, this.error.bind(this));
-    if (localStorage.getItem('weather') != null || localStorage.getItem('coord') != null) {
+    if (localStorage.getItem('weather') != null) {
       const localResponse = JSON.parse(localStorage.getItem('weather'));
       this.city = localResponse.name;
       this.temp = localResponse.main.temp.toFixed();
+      this.tempMin = Math.floor(localResponse.main.temp_min);
+      this.tempMax = Math.ceil(localResponse.main.temp_max);
+      this.weatherMain = localResponse.weather[0].main;
+      this.weatherDesc = localResponse.weather[0].description;
+      this.icon = `http://openweathermap.org/img/w/${localResponse.weather[0].icon}.png`;
     } else {
       this.takeWeatherCity('Cherkasy');
     }
