@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 
-export class WeatherService {
+export class WeatherApiService {
 
   apiKey = 'e38fa7171a76cd46d84400b96b366241';
   url = 'http://api.openweathermap.org/data/2.5/weather?';

@@ -24,6 +24,13 @@ export class TodoComponent implements OnInit {
     description: new FormControl()
   });
 
+  ngOnInit() {
+    this.getTasks();
+    if (localStorage.getItem('tasks') != null && !this.tasks.length) {
+      this.localstorageService.createLocalTasks();
+    }
+  }
+
   private findToDo(taskIndex) {
     return this.tasks.find(todo => todo.id === this.tasks[taskIndex].id);
   }
@@ -65,13 +72,6 @@ export class TodoComponent implements OnInit {
         return this.tasks.filter(task => task.complete);
       default:
         return this.tasks;
-    }
-  }
-
-  ngOnInit() {
-    this.getTasks();
-    if (localStorage.getItem('tasks') != null && !this.tasks.length) {
-      this.localstorageService.createLocalTasks();
     }
   }
 

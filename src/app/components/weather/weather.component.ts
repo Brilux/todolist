@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { WeatherService } from '../../services/weather.service';
+import { WeatherApiService } from '../../services/weather-api.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { WeatherService } from '../../services/weather.service';
+import { WeatherModel } from '../../models/weather.model';
 
 @Component({
   selector: 'app-weather',
@@ -8,10 +10,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./weather.component.css']
 })
 export class WeatherComponent implements OnInit {
-
-
-  constructor(private weatherService: WeatherService) {
-  }
 
   city: string;
   temp: number;
@@ -22,9 +20,21 @@ export class WeatherComponent implements OnInit {
   weatherDesc: string;
   cityToggle: boolean;
 
-  public cityForm: FormGroup = new FormGroup({
+  cityForm: FormGroup = new FormGroup({
     city: new FormControl(null, Validators.required),
   });
+
+  constructor(private weatherApiService: WeatherApiService, private weatherService: WeatherService) {
+  }
+
+  ngOnInit() {
+    if (localStorage.getItem('weather') != null) {
+      const localResponse = JSON.parse(localStorage.getItem('weather'));
+      this.createWidget(localResponse);
+    } else {
+      this.takeWeatherCity('Cherkasy');
+    }
+  }
 
   private saveCity(): void {
     this.city = this.cityForm.value.city;
@@ -32,30 +42,28 @@ export class WeatherComponent implements OnInit {
   }
 
   public takeWeatherCity(city: string): void {
-    this.weatherService.searchWeatherDataByCity(city).subscribe(response => {
-      this.city = response.name;
-      this.temp = response.main.temp.toFixed();
-      this.tempMin = Math.floor(response.main.temp_min);
-      this.tempMax = Math.ceil(response.main.temp_max);
-      this.weatherMain = response.weather[0].main;
-      this.weatherDesc = response.weather[0].description;
-      this.icon = `http://openweathermap.org/img/w/${response.weather[0].icon}.png`;
+    this.weatherApiService.searchWeatherDataByCity(city).subscribe(response => {
+      this.createWidget(response);
       localStorage.setItem('weather', JSON.stringify(response));
     });
   }
 
-  ngOnInit() {
-    if (localStorage.getItem('weather') != null) {
-      const localResponse = JSON.parse(localStorage.getItem('weather'));
-      this.city = localResponse.name;
-      this.temp = localResponse.main.temp.toFixed();
-      this.tempMin = Math.floor(localResponse.main.temp_min);
-      this.tempMax = Math.ceil(localResponse.main.temp_max);
-      this.weatherMain = localResponse.weather[0].main;
-      this.weatherDesc = localResponse.weather[0].description;
-      this.icon = `http://openweathermap.org/img/w/${localResponse.weather[0].icon}.png`;
-    } else {
-      this.takeWeatherCity('Cherkasy');
-    }
+  private newWeatherInfo(response) {
+    const newWeatherInfo = new WeatherModel();
+    newWeatherInfo.city = response.name;
+    newWeatherInfo.temperature = response.main.temp.toFixed();
+    this.weatherService.changeWeatherInfo(newWeatherInfo);
   }
+
+  private createWidget(response) {
+    this.city = response.name;
+    this.temp = response.main.temp.toFixed();
+    this.tempMin = Math.floor(response.main.temp_min);
+    this.tempMax = Math.ceil(response.main.temp_max);
+    this.weatherMain = response.weather[0].main;
+    this.weatherDesc = response.weather[0].description;
+    this.icon = `http://openweathermap.org/img/w/${response.weather[0].icon}.png`;
+    this.newWeatherInfo(response);
+  }
+
 }

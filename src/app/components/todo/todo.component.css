@@ -9,21 +9,9 @@
   opacity: .5;
 }
 
-/*.task-checkbox-container {*/
-  /*margin: 0 auto;*/
-  /*align-self: center;*/
-/*}*/
-
 .task-checkbox {
-  /*height: 15px;*/
-  /*width: 15px;*/
   margin: 0 auto;
   align-self: center;
-  background-color: #eee;
-}
-
-.task-checkbox-container input:checked ~ .task-checkbox {
-  background-color: #2196F3;
 }
 
 .form-container {

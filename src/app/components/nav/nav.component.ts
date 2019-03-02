@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { WeatherApiService } from '../../services/weather-api.service';
 import { WeatherService } from '../../services/weather.service';
+import { WeatherModel } from '../../models/weather.model';
+
 
 @Component({
   selector: 'app-nav',
@@ -8,27 +11,40 @@ import { WeatherService } from '../../services/weather.service';
 })
 export class NavComponent implements OnInit {
 
-  constructor(private weatherService: WeatherService) {
-  }
-
   city: string;
   temp: number;
   toggle: boolean;
 
-  public takeWeatherCity(city: string): void {
-    this.weatherService.searchWeatherDataByCity(city).subscribe(response => {
-      this.city = response.name;
-      this.temp = response.main.temp.toFixed();
-      localStorage.setItem('weather', JSON.stringify(response));
+  constructor(private weatherApiService: WeatherApiService, private weatherService: WeatherService) {
+  }
+
+  ngOnInit() {
+    this.getWeather();
+    this.weatherService.getWeatherInfoSubscription().subscribe(weatherInfo => {
+      this.city = weatherInfo.city;
+      this.temp = weatherInfo.temperature;
     });
   }
 
+  private newWeatherInfo(response) {
+    const newWeatherInfo = new WeatherModel();
+    newWeatherInfo.city = response.name;
+    newWeatherInfo.temperature = response.main.temp.toFixed();
+    this.weatherService.changeWeatherInfo(newWeatherInfo);
+  }
+
+  private updateWeatherInfo(response) {
+    console.log(response);
+    this.newWeatherInfo(response);
+    localStorage.setItem('weather', JSON.stringify(response));
+  }
+
+  public takeWeatherCity(city: string): void {
+    this.weatherApiService.searchWeatherDataByCity(city).subscribe(response => this.updateWeatherInfo(response));
+  }
+
   private takeWeatherCoord(lat: number, lon: number): void {
-    this.weatherService.searchWeatherDataByCoord(lat, lon).subscribe(response => {
-      this.city = response.name;
-      this.temp = response.main.temp.toFixed();
-      localStorage.setItem('weather', JSON.stringify(response));
-    });
+    this.weatherApiService.searchWeatherDataByCoord(lat, lon).subscribe(response => this.updateWeatherInfo(response));
   }
 
   private error(err): void {
@@ -39,23 +55,12 @@ export class NavComponent implements OnInit {
   public getWeather() {
     if (localStorage.getItem('weather') != null) {
       const localResponse = JSON.parse(localStorage.getItem('weather'));
-      this.city = localResponse.name;
-      this.temp = localResponse.main.temp.toFixed();
+      this.newWeatherInfo(localResponse);
     } else {
       navigator.geolocation.getCurrentPosition((pos) => {
         const crd = pos.coords;
         this.takeWeatherCoord(crd.latitude, crd.longitude);
       }, this.error.bind(this));
     }
-  }
-
-  public updateWeather() {
-    const localResponse = JSON.parse(localStorage.getItem('weather'));
-    this.city = localResponse.name;
-    this.temp = localResponse.main.temp.toFixed();
-  }
-
-  ngOnInit() {
-    this.getWeather();
   }
 }

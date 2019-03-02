@@ -10,13 +10,18 @@ import { LocalstorageService } from '../../services/localstorage.service';
 })
 export class TaskEditComponent implements OnInit, OnChanges {
 
-  constructor(private todoService: TodoService, private localstorageService: LocalstorageService) {
-  }
-
   public form: FormGroup = new FormGroup({
     task: new FormControl(null, Validators.required),
     description: new FormControl()
   });
+
+  constructor(private todoService: TodoService, private localstorageService: LocalstorageService) {
+  }
+
+  ngOnInit() {
+    this.todoService.getTasks().subscribe(tasks => tasks);
+  }
+
 
   public editTask(): void {
     const createId: number = Date.now();
@@ -30,10 +35,6 @@ export class TaskEditComponent implements OnInit, OnChanges {
     };
     this.todoService.editTask(editedTask);
     this.localstorageService.editTask(editedTask);
-  }
-
-  ngOnInit() {
-    this.todoService.getTasks().subscribe(tasks => tasks);
   }
 
   ngOnChanges() {
