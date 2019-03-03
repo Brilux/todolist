@@ -22,7 +22,6 @@ export class TaskEditComponent implements OnInit, OnChanges {
     this.todoService.getTasks().subscribe(tasks => tasks);
   }
 
-
   public editTask(): void {
     const createId: number = Date.now();
     const tasks = JSON.parse(localStorage.getItem('tasks'));

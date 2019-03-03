@@ -34,7 +34,6 @@ export class NavComponent implements OnInit {
   }
 
   private updateWeatherInfo(response) {
-    console.log(response);
     this.newWeatherInfo(response);
     localStorage.setItem('weather', JSON.stringify(response));
   }
@@ -52,7 +51,7 @@ export class NavComponent implements OnInit {
     this.takeWeatherCity('Cherkasy');
   }
 
-  public getWeather() {
+  private getWeather() {
     if (localStorage.getItem('weather') != null) {
       const localResponse = JSON.parse(localStorage.getItem('weather'));
       this.newWeatherInfo(localResponse);

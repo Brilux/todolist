@@ -1,0 +1,44 @@
+[
+  {
+    "country": "UA",
+    "name": "Kyiv",
+    "lat": "50.45466",
+    "lng": "30.5238"
+  },
+  {
+    "country": "UA",
+    "name": "Zaporizhia",
+    "lat": "47.82289",
+    "lng": "35.19031"
+  },
+  {
+    "country": "UA",
+    "name": "Lviv",
+    "lat": "49.83826",
+    "lng": "24.02324"
+  },
+  {
+    "country": "UA",
+    "name": "Cherkasy",
+    "lat": "49.42854",
+    "lng": "32.06207"
+  },
+  {
+    "country": "US",
+    "name": "London",
+    "lat": "35.32897",
+    "lng": "-93.25296"
+  },
+  {
+    "country": "DE",
+    "name": "Berlin",
+    "lat": "52.52437",
+    "lng": "13.41053"
+  },
+  {
+    "country": "ES",
+    "name": "Barcelona",
+    "lat": "41.38879",
+    "lng": "2.15899"
+  }
+]
