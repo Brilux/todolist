@@ -1,3 +1,4 @@
+<div class="todo-component-container">
 <div class="wrapper">
   <p class="welcome-title" *ngIf="!tasks.length">
     Hi! Welcome to your ToDo!
@@ -22,8 +23,7 @@
     <mat-card class="task-list" *ngFor="let task of taskFiltered(); let taskIndex = index"
               [class.complete]="task.complete">
       <mat-checkbox type="checkbox" class="task-checkbox" (change)="toggle(task, taskIndex)" [checked]="task.complete"></mat-checkbox>
-      <div class="task-item-container" (click)="findToDoForEdit(taskIndex)"
-           [routerLink]="[ '/task-edit' ]">
+      <div class="task-item-container" (click)="findToDoForEdit(taskIndex)"  [routerLink]="task.complete ? null : [ '/task-edit' ]">
         <span class="task-item-title">{{task.title}}</span>
         <span class="task-item-description">{{task.description}}</span>
         <span class="task-item-time">Time: {{task.id | date: 'd LLL HH:mm'}}</span>
@@ -39,5 +39,5 @@
     <button mat-raised-button color="primary" (click)="filter='completed'">Completed</button>
   </div>
 </div>
-
+</div>
 

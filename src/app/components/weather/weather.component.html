@@ -1,16 +1,17 @@
+<div class="weather-component-container">
 <div class="widget-container" *ngIf="city">
   <h1 class="widget-city">City: {{city}}</h1>
   <div class="temperature-container">
     <p>Temperature: {{temp}} °C</p>
     <div class="temperature-info">
-      <p>Min: {{tempMin}} °C</p>
-      <p>Max: {{tempMax}} °C</p>
+      <p>Min temperature: {{tempMin}} °C</p>
+      <p>Max temperature: {{tempMax}} °C</p>
     </div>
-    <h2>{{weatherMain}}</h2>
-    <p>{{weatherDesc}}</p>
-    <div>
-      <img src="{{icon}}" alt="icon">
-    </div>
+  </div>
+  <h2>{{weatherMain}}</h2>
+  <p>{{weatherDesc}}</p>
+  <div>
+    <img src="{{icon}}" alt="icon">
   </div>
 </div>
 
@@ -18,7 +19,7 @@
   <button mat-raised-button color="primary" (click)="cityToggle = !cityToggle">Search city</button>
 </div>
 <form class="form-container" *ngIf="cityToggle" [formGroup]="cityForm" (ngSubmit)="saveCity()">
-  <mat-form-field style="display: block">
+  <mat-form-field>
     <input matInput formControlName="city" placeholder="Enter the name of City" [matAutocomplete]="auto">
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let city of filteredCities | async" [value]="city.name">
@@ -31,4 +32,4 @@
     <button class="city-button" mat-raised-button color="primary" [disabled]="!cityForm.valid">Find city</button>
   </div>
 </form>
-
+</div>
