@@ -3,20 +3,21 @@
   flex-direction: column;
   justify-content: space-around;
   text-align: center;
-}
-
-.widget-city {
-  text-align: left;
+  background-color: white;
+  border: 1px solid black;
+  margin: 10px;
 }
 
 .temperature-container {
   display: flex;
   flex-direction: column;
+  font-size: 25px;
 }
 
 .temperature-info {
   display: flex;
   justify-content: space-around;
+  font-size: 20px;
 }
 
 .weather-buttons {
@@ -29,7 +30,7 @@
 .form-container {
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  margin: 10px;
   max-width: 1000px;
 }
 
@@ -38,13 +39,26 @@
   justify-content: center;
 }
 
-.coord-button {
-  margin: 0 auto;
-}
-
 .button-container {
   display: flex;
   justify-content: center;
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+@media screen and (min-width: 576px) {
+  .weather-component-container {
+    max-width: 577px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 768px) {
+
+}
+
+@media screen and (min-width: 992px) {
+
+}
+
+

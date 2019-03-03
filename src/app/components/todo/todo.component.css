@@ -2,6 +2,7 @@
   list-style: none;
   margin: 15px;
   display: flex;
+  justify-content: space-around;
 }
 
 .complete {
@@ -86,4 +87,24 @@
   justify-content: space-around;
   margin-top: 30px;
   margin-bottom: 30px;
+}
+
+@media screen and (min-width: 576px) {
+
+}
+
+@media screen and (min-width: 768px) {
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    min-width: 600px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .todo-component-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
 }

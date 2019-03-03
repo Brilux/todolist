@@ -6,13 +6,30 @@
 .form-container {
   display: flex;
   flex-direction: column;
+  margin: 10px;
 }
 
 .task-edit-buttons-container {
   display: flex;
   flex-direction: column;
+  margin: 10px;
 }
 
 .task-edit-button {
   margin-top: 10px;
+}
+
+@media screen and (min-width: 576px) {
+
+}
+
+@media screen and (min-width: 768px) {
+
+}
+
+@media screen and (min-width: 992px) {
+  .task-edit-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
 }
