@@ -3,6 +3,10 @@ import { WeatherApiService } from '../../services/weather-api.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { WeatherService } from '../../services/weather.service';
 import { WeatherModel } from '../../models/weather.model';
+import { Observable } from 'rxjs';
+import { CityModel } from '../../models/city.model';
+import { map, startWith } from 'rxjs/operators';
+import { CitiesCompleteService } from '../../services/cities-complete.service';
 
 @Component({
   selector: 'app-weather',
@@ -24,10 +28,21 @@ export class WeatherComponent implements OnInit {
     city: new FormControl(null, Validators.required),
   });
 
-  constructor(private weatherApiService: WeatherApiService, private weatherService: WeatherService) {
+  filteredCities: Observable<CityModel[]>;
+
+  cities: CityModel[];
+
+  constructor(private weatherApiService: WeatherApiService, private weatherService: WeatherService,
+              private citiesCompleteService: CitiesCompleteService) {
+    this.filteredCities = this.cityForm.get('city').valueChanges
+      .pipe(
+        startWith(''),
+        map(city => city ? this.cityFilter(city) : this.cities.slice())
+      );
   }
 
   ngOnInit() {
+    this.citiesCompleteService.getCities().subscribe(city => this.cities = city);
     if (localStorage.getItem('weather') != null) {
       const localResponse = JSON.parse(localStorage.getItem('weather'));
       this.createWidget(localResponse);
@@ -36,12 +51,18 @@ export class WeatherComponent implements OnInit {
     }
   }
 
-  private saveCity(): void {
-    this.city = this.cityForm.value.city;
-    this.takeWeatherCity(this.city);
+  private cityFilter(city: string): CityModel[] {
+    const filterCity = city.toLowerCase();
+    return this.cities.filter(filteredCities => filteredCities.name.toLowerCase().indexOf(filterCity) === 0);
   }
 
-  public takeWeatherCity(city: string): void {
+  public saveCity(): void {
+    this.city = this.cityForm.value.city;
+    this.takeWeatherCity(this.city);
+    this.cityForm.reset();
+  }
+
+  private takeWeatherCity(city: string): void {
     this.weatherApiService.searchWeatherDataByCity(city).subscribe(response => {
       this.createWidget(response);
       localStorage.setItem('weather', JSON.stringify(response));
@@ -65,5 +86,4 @@ export class WeatherComponent implements OnInit {
     this.icon = `http://openweathermap.org/img/w/${response.weather[0].icon}.png`;
     this.newWeatherInfo(response);
   }
-
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task } from '../models/todo';
+import { TaskModel } from '../models/todo.model';
 import { TodoService } from './todo.service';
 
 @Injectable({
@@ -24,14 +24,14 @@ export class LocalstorageService {
   }
 
   public createLocalTasks(): void {
-    const tasks: Task[] = this.getTasks();
+    const tasks: TaskModel[] = this.getTasks();
     for (const key of tasks) {
       this.todoService.tasks.push(key);
     }
   }
 
-  public toggleLocal(task: Task, taskIndex: number): void {
-    const tasks: Task[] = this.getTasks();
+  public toggleLocal(task: TaskModel, taskIndex: number): void {
+    const tasks: TaskModel[] = this.getTasks();
     tasks[taskIndex].complete = !tasks[taskIndex].complete;
     this.setTasks(tasks);
   }
@@ -41,14 +41,14 @@ export class LocalstorageService {
   }
 
   public deleteTask(todoForDelete): void {
-    const tasks: Task[] = this.getTasks();
+    const tasks: TaskModel[] = this.getTasks();
     const indexForDel = tasks.findIndex(todo => todo.id === todoForDelete.id);
     tasks.splice(indexForDel, 1);
     this.setTasks(tasks);
   }
 
-  public editTask(task: Task): void {
-    const tasks: Task[] = this.getTasks();
+  public editTask(task: TaskModel): void {
+    const tasks: TaskModel[] = this.getTasks();
     const indexForDel = tasks.findIndex(todo => todo.id === this.todoForEdit.id);
     tasks.splice(indexForDel, 1, task);
     this.setTasks(tasks);

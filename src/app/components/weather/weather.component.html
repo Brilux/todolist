@@ -11,11 +11,17 @@
 </div>
 
 <div class="weather-buttons">
-  <button mat-raised-button color="primary" (click)="cityToggle = !cityToggle">Add city</button>
+  <button mat-raised-button color="primary" (click)="cityToggle = !cityToggle">Search city</button>
 </div>
 <form class="form-container" *ngIf="cityToggle" [formGroup]="cityForm" (ngSubmit)="saveCity()">
   <mat-form-field style="display: block">
-    <input matInput formControlName="city" placeholder="Enter the name of City">
+    <input matInput formControlName="city" placeholder="Enter the name of City" [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let city of filteredCities | async" [value]="city.name">
+        <span>{{city.name}}</span> |
+        <span>{{city.country}}</span>
+      </mat-option>
+    </mat-autocomplete>
   </mat-form-field>
   <div class="button-container">
     <button class="city-button" mat-raised-button color="primary" [disabled]="!cityForm.valid">Find city</button>

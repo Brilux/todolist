@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Task } from '../../models/todo';
+import { TaskModel } from '../../models/todo.model';
 import { TodoService } from '../../services/todo.service';
 import { LocalstorageService } from '../../services/localstorage.service';
 
@@ -17,7 +17,7 @@ export class TodoComponent implements OnInit {
   isCreate = false;
   filter = '';
 
-  public tasks: Task[] = [];
+  public tasks: TaskModel[] = [];
 
   public form: FormGroup = new FormGroup({
     task: new FormControl(null, Validators.required),
@@ -40,13 +40,13 @@ export class TodoComponent implements OnInit {
     this.todoService.findToDoForEdit(this.findToDo(taskIndex));
   }
 
-  private toggle(task: Task, taskIndex: number): void {
+  public toggle(task: TaskModel, taskIndex: number): void {
     task.complete = !task.complete;
     const findIndex = this.tasks.findIndex(todo => todo.id === this.tasks[taskIndex].id);
     this.localstorageService.toggleLocal(task, findIndex);
   }
 
-  private createTask(): void {
+  public createTask(): void {
     const createId: number = Date.now();
     this.todoService.addTask({
       id: createId,
@@ -62,7 +62,7 @@ export class TodoComponent implements OnInit {
     this.todoService.deleteTask(this.findToDo(taskIndex));
   }
 
-  public taskFiltered(): Task[] {
+  public taskFiltered(): TaskModel[] {
     switch (this.filter) {
       case 'all':
         return this.tasks;

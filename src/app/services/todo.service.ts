@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task } from '../models/todo';
+import { TaskModel } from '../models/todo.model';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class TodoService {
   constructor() {
   }
 
-  public tasks: Task[] = [];
+  public tasks: TaskModel[] = [];
 
   todoForEdit: any;
 
@@ -18,7 +18,7 @@ export class TodoService {
     return this.todoForEdit = todoForEdit;
   }
 
-  public addTask(task: Task): void {
+  public addTask(task: TaskModel): void {
     this.tasks.unshift(task);
   }
 
@@ -27,12 +27,12 @@ export class TodoService {
     this.tasks.splice(indexForDel, 1);
   }
 
-  public editTask(task: Task): void {
+  public editTask(task: TaskModel): void {
     const indexForDel = this.tasks.findIndex(todo => todo.id === this.todoForEdit.id);
     this.tasks.splice(indexForDel, 1, task);
   }
 
-  getTasks(): Observable<Task[]> {
+  getTasks(): Observable<TaskModel[]> {
     return of(this.tasks);
   }
 }
