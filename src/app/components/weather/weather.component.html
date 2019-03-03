@@ -1,12 +1,16 @@
-<div *ngIf="city">
-  <h1>City: {{city}}</h1>
-  <p>Temperature: {{temp}} °C</p>
-  <p>Min Temperature: {{tempMin}} °C</p>
-  <p>Max Temperature: {{tempMax}} °C</p>
-  <h2>{{weatherMain}}</h2>
-  <p>{{weatherDesc}}</p>
-  <div>
-    <img src="{{icon}}" alt="icon">
+<div class="widget-container" *ngIf="city">
+  <h1 class="widget-city">City: {{city}}</h1>
+  <div class="temperature-container">
+    <p>Temperature: {{temp}} °C</p>
+    <div class="temperature-info">
+      <p>Min: {{tempMin}} °C</p>
+      <p>Max: {{tempMax}} °C</p>
+    </div>
+    <h2>{{weatherMain}}</h2>
+    <p>{{weatherDesc}}</p>
+    <div>
+      <img src="{{icon}}" alt="icon">
+    </div>
   </div>
 </div>
 

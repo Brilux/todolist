@@ -37,7 +37,7 @@ export class WeatherComponent implements OnInit {
     this.filteredCities = this.cityForm.get('city').valueChanges
       .pipe(
         startWith(''),
-        map(city => city ? this.cityFilter(city) : this.cities.slice())
+        map(city => city ? this.cityFilter(city) : null)
       );
   }
 
@@ -52,8 +52,10 @@ export class WeatherComponent implements OnInit {
   }
 
   private cityFilter(city: string): CityModel[] {
-    const filterCity = city.toLowerCase();
-    return this.cities.filter(filteredCities => filteredCities.name.toLowerCase().indexOf(filterCity) === 0);
+    if (city.length > 2) {
+      const filterCity = city.toLowerCase();
+      return this.cities.filter(filteredCities => filteredCities.name.toLowerCase().indexOf(filterCity) === 0);
+    }
   }
 
   public saveCity(): void {
