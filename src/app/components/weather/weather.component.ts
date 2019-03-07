@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherApiService } from '../../services/weather-api.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { WeatherService } from '../../services/weather.service';
 import { WeatherModel } from '../../models/weather.model';
 import { Observable } from 'rxjs';
 import { CityModel } from '../../models/city.model';
-import { map, startWith } from 'rxjs/operators';
+import { filter, map, startWith } from 'rxjs/operators';
 import { CitiesCompleteService } from '../../services/cities-complete.service';
 
 @Component({
@@ -24,20 +24,19 @@ export class WeatherComponent implements OnInit {
   weatherDesc: string;
   cityToggle: boolean;
 
-  cityForm: FormGroup = new FormGroup({
-    city: new FormControl(null, Validators.required),
-  });
+  cityInput = new FormControl('', this.emptyValidator);
 
   filteredCities: Observable<CityModel[]>;
 
   cities: CityModel[];
 
-  constructor(private weatherApiService: WeatherApiService, private weatherService: WeatherService,
+  constructor(private weatherApiService: WeatherApiService,
+              private weatherService: WeatherService,
               private citiesCompleteService: CitiesCompleteService) {
-    this.filteredCities = this.cityForm.get('city').valueChanges
+    this.filteredCities = this.cityInput.valueChanges
       .pipe(
         startWith(''),
-        map(city => city ? this.cityFilter(city) : null)
+        map(city => city ? this.cityFilter(city) : null),
       );
   }
 
@@ -46,22 +45,30 @@ export class WeatherComponent implements OnInit {
     if (localStorage.getItem('weather') != null) {
       const localResponse = JSON.parse(localStorage.getItem('weather'));
       this.createWidget(localResponse);
-    } else {
-      this.takeWeatherCity('Cherkasy');
+    }
+  }
+
+  private emptyValidator(control: FormControl) {
+    if ((control.value || '').trim().length === 0) {
+      return {
+        'empty': true
+      };
+    } else if (control.value.length <= 2) {
+      return {
+        'short': true
+      };
     }
   }
 
   private cityFilter(city: string): CityModel[] {
-    if (city.length > 2) {
-      const filterCity = city.toLowerCase();
-      return this.cities.filter(filteredCities => filteredCities.name.toLowerCase().indexOf(filterCity) === 0);
-    }
+    const filterCity = city.toLowerCase();
+    return this.cities.filter(filteredCities => filteredCities.name.toLowerCase().indexOf(filterCity) === 0);
   }
 
   public saveCity(): void {
-    this.city = this.cityForm.value.city;
+    this.city = this.cityInput.value;
     this.takeWeatherCity(this.city);
-    this.cityForm.reset();
+    // this.cityInput.reset();
   }
 
   private takeWeatherCity(city: string): void {

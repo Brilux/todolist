@@ -5,7 +5,7 @@ import { TaskEditComponent } from './components/task-edit/task-edit.component';
 import { WeatherComponent } from './components/weather/weather.component';
 
 const routes: Routes = [
-  { path: '', component: TodoComponent },
+  { path: '', redirectTo: '/todo', pathMatch: 'full' },
   { path: 'task-edit', component: TaskEditComponent },
   { path: 'todo', component: TodoComponent },
   { path: 'weather', component: WeatherComponent }

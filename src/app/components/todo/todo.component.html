@@ -1,43 +1,47 @@
 <div class="todo-component-container">
-<div class="wrapper">
-  <p class="welcome-title" *ngIf="!tasks.length">
-    Hi! Welcome to your ToDo!
-    You don't have any Todos. You can add it using button
-  </p>
-  <div class="button-container">
-    <button class="create-button" mat-raised-button color="primary" (click)="isCreate = !isCreate">Create new ToDo
-    </button>
-  </div>
-  <form class="form-container" *ngIf="isCreate" [formGroup]="form" (ngSubmit)="createTask()">
-    <mat-form-field>
-      <input matInput formControlName="task" placeholder="Enter the title of ToDo">
-    </mat-form-field>
+  <div class="wrapper">
+    <p class="welcome-title" *ngIf="!tasks.length">
+      Hi! Welcome to your ToDo!
+      You don't have any Todos. You can add it using button
+    </p>
     <div class="button-container">
-      <button class="create-button" mat-raised-button color="primary" [disabled]="!form.valid">Create ToDo</button>
-    </div>
-  </form>
-</div>
-
-<div>
-  <ul class="task-list-container">
-    <mat-card class="task-list" *ngFor="let task of taskFiltered(); let taskIndex = index"
-              [class.complete]="task.complete">
-      <mat-checkbox type="checkbox" class="task-checkbox" (change)="toggle(task, taskIndex)" [checked]="task.complete"></mat-checkbox>
-      <div class="task-item-container" (click)="findToDoForEdit(taskIndex)"  [routerLink]="task.complete ? null : [ '/task-edit' ]">
-        <span class="task-item-title">{{task.title}}</span>
-        <span class="task-item-description">{{task.description}}</span>
-        <span class="task-item-time">Time: {{task.id | date: 'd LLL HH:mm'}}</span>
-      </div>
-      <button class="task-icon" mat-icon-button (click)="deleteTask(taskIndex)">
-        <mat-icon>clear</mat-icon>
+      <button class="create-button" mat-raised-button color="primary" (click)="isCreate = !isCreate">Create new ToDo
       </button>
-    </mat-card>
-  </ul>
-  <div class="task-filter-container" *ngIf="tasks.length">
-    <button mat-raised-button color="primary" (click)="filter='all'">All</button>
-    <button mat-raised-button color="primary" (click)="filter='active'">Active</button>
-    <button mat-raised-button color="primary" (click)="filter='completed'">Completed</button>
+    </div>
+    <form class="form-container" *ngIf="isCreate" (ngSubmit)="createTask()">
+      <mat-form-field>
+        <input matInput [formControl]="taskInput" placeholder="Enter the title of ToDo">
+      </mat-form-field>
+      <mat-error *ngIf="taskInput.hasError('empty') && taskInput.touched">Title can't be empty!!!</mat-error>
+      <div class="button-container">
+        <button class="create-button" mat-raised-button color="primary" [disabled]="!taskInput.valid">Create ToDo
+        </button>
+      </div>
+    </form>
   </div>
-</div>
+
+  <div>
+    <div class="task-filter-container" *ngIf="tasks.length">
+      <button mat-raised-button color="primary" (click)="filter='all'">All</button>
+      <button mat-raised-button color="primary" (click)="filter='active'">Active</button>
+      <button mat-raised-button color="primary" (click)="filter='completed'">Completed</button>
+    </div>
+    <ul class="task-list-container">
+      <mat-card class="task-list" *ngFor="let task of taskFiltered(); let taskIndex = index"
+                [class.complete]="task.complete">
+        <mat-checkbox type="checkbox" class="task-checkbox" (change)="toggle(task, taskIndex)"
+                      [checked]="task.complete"></mat-checkbox>
+        <div class="task-item-container" (click)="findToDoForEdit(task.id)"
+             [routerLink]="task.complete ? null : [ '/task-edit' ]">
+          <span class="task-item-title">{{task.title}}</span>
+          <span class="task-item-description">{{task.description}}</span>
+          <span class="task-item-time">Time: {{task.id | date: 'd LLL HH:mm'}}</span>
+        </div>
+        <button class="task-icon" mat-icon-button (click)="deleteTask(task.id)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </mat-card>
+    </ul>
+  </div>
 </div>
 
