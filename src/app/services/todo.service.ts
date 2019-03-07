@@ -12,7 +12,7 @@ export class TodoService {
 
   public tasks: TaskModel[] = [];
 
-  todoForEdit: any;
+  todoForEdit: TaskModel;
 
   public findToDoForEdit(todoForEdit) {
     return this.todoForEdit = todoForEdit;
@@ -22,8 +22,8 @@ export class TodoService {
     this.tasks.unshift(task);
   }
 
-  public deleteTask(todoForDelete): void {
-    const indexForDel = this.tasks.findIndex(todo => todo.id === todoForDelete.id);
+  public deleteTask(taskId): void {
+    const indexForDel = this.tasks.findIndex(todo => todo.id === taskId.id);
     this.tasks.splice(indexForDel, 1);
   }
 

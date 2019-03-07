@@ -14,8 +14,10 @@ export class NavComponent implements OnInit {
   city: string;
   temp: number;
   toggle: boolean;
+  private defaultCity = 'Cherkasy';
 
-  constructor(private weatherApiService: WeatherApiService, private weatherService: WeatherService) {
+  constructor(private weatherApiService: WeatherApiService,
+              private weatherService: WeatherService) {
   }
 
   ngOnInit() {
@@ -48,7 +50,7 @@ export class NavComponent implements OnInit {
 
   private error(err): void {
     console.warn(`ERROR(${err.code}): ${err.message}`);
-    this.takeWeatherCity('Cherkasy');
+    this.takeWeatherCity(this.defaultCity);
   }
 
   private getWeather() {

@@ -40,9 +40,9 @@ export class LocalstorageService {
     this.setTasks(this.todoService.tasks);
   }
 
-  public deleteTask(todoForDelete): void {
+  public deleteTask(taskId): void {
     const tasks: TaskModel[] = this.getTasks();
-    const indexForDel = tasks.findIndex(todo => todo.id === todoForDelete.id);
+    const indexForDel = tasks.findIndex(todo => todo.id === taskId.id);
     tasks.splice(indexForDel, 1);
     this.setTasks(tasks);
   }
