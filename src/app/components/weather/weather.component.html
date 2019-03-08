@@ -12,14 +12,12 @@
         </mat-option>
       </mat-autocomplete>
       <mat-error *ngIf="cityInput.hasError('empty') && cityInput.touched">Untitled City does not exist</mat-error>
-      <!--<mat-error *ngIf="cityInput.hasError('short')">City name is too short</mat-error>-->
+      <mat-error *ngIf="cityInput.hasError('short')">City name is too short</mat-error>
     </mat-form-field>
     <div class="button-container">
       <button class="city-button" mat-raised-button color="primary" [disabled]="!cityInput.valid">Find city</button>
     </div>
   </form>
-
-
   <div class="widget-container" *ngIf="city">
     <h1 class="widget-city">City: {{city}}</h1>
     <div class="temperature-container">

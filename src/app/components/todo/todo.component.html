@@ -29,7 +29,7 @@
     <ul class="task-list-container">
       <mat-card class="task-list" *ngFor="let task of taskFiltered(); let taskIndex = index"
                 [class.complete]="task.complete">
-        <mat-checkbox type="checkbox" class="task-checkbox" (change)="toggle(task, taskIndex)"
+        <mat-checkbox color="primary" type="checkbox" class="task-checkbox" (change)="toggle(task, taskIndex)"
                       [checked]="task.complete"></mat-checkbox>
         <div class="task-item-container" (click)="findToDoForEdit(task.id)"
              [routerLink]="task.complete ? null : [ '/task-edit' ]">
