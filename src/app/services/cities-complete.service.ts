@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -13,13 +13,8 @@ export class CitiesCompleteService {
 
   getCities(): Observable<any> {
     return this.http.get('../../assets/cities.json').pipe(
-      map(response => {
-        if (!response) {
-          throw new Error('Getting cities error!');
-        } else {
-          return response;
-        }
-      }),
+      catchError(err => throwError(('Getting cities error!'))),
+      map(response => response)
     );
   }
 }

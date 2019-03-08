@@ -36,7 +36,7 @@ export class WeatherComponent implements OnInit {
     this.filteredCities = this.cityInput.valueChanges
       .pipe(
         startWith(''),
-        map(city => city ? this.cityFilter(city) : null),
+        map(city => city ? this.cityFilter(city) : null)
       );
   }
 
@@ -62,13 +62,13 @@ export class WeatherComponent implements OnInit {
 
   private cityFilter(city: string): CityModel[] {
     const filterCity = city.toLowerCase();
-    return this.cities.filter(filteredCities => filteredCities.name.toLowerCase().indexOf(filterCity) === 0);
+    return this.cities.filter(filteredCities => filteredCities.name.toLowerCase().indexOf(filterCity) === 0).slice(0, 50);
   }
 
   public saveCity(): void {
     this.city = this.cityInput.value;
     this.takeWeatherCity(this.city);
-    // this.cityInput.reset();
+    this.cityInput.reset();
   }
 
   private takeWeatherCity(city: string): void {
