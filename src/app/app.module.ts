@@ -19,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TaskEditComponent } from './components/task-edit/task-edit.component';
 import { WeatherComponent } from './components/weather/weather.component';
 import { HttpClientModule } from '@angular/common/http';
+import { TasksFilterPipe } from './pipes/tasks-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { HttpClientModule } from '@angular/common/http';
     TodoComponent,
     TaskEditComponent,
     WeatherComponent,
+    TasksFilterPipe,
   ],
   imports: [
     BrowserModule,
