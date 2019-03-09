@@ -22,14 +22,14 @@
 
   <div>
     <div class="task-filter-container" *ngIf="tasks.length">
-      <button mat-raised-button color="primary" (click)="filter='all'">All</button>
-      <button mat-raised-button color="primary" (click)="filter='active'">Active</button>
-      <button mat-raised-button color="primary" (click)="filter='completed'">Completed</button>
+      <button mat-raised-button color="primary" (click)="arg = enumFilter.all">All</button>
+      <button mat-raised-button color="primary" (click)="arg = enumFilter.active">Active</button>
+      <button mat-raised-button color="primary" (click)="arg = enumFilter.completed">Completed</button>
     </div>
     <ul class="task-list-container">
-      <mat-card class="task-list" *ngFor="let task of taskFiltered(); let taskIndex = index"
+      <mat-card class="task-list" *ngFor="let task of tasks | tasksFilter:arg"
                 [class.complete]="task.complete">
-        <mat-checkbox color="primary" type="checkbox" class="task-checkbox" (change)="toggle(task, taskIndex)"
+        <mat-checkbox color="primary" type="checkbox" class="task-checkbox" (change)="toggle(task)"
                       [checked]="task.complete"></mat-checkbox>
         <div class="task-item-container" (click)="findToDoForEdit(task.id)"
              [routerLink]="task.complete ? null : [ '/task-edit' ]">

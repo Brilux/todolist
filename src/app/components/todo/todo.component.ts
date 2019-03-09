@@ -7,7 +7,7 @@ import { LocalstorageService } from '../../services/localstorage.service';
 export enum Enum {
   all = 'all',
   active = 'active',
-  complete = 'complete'
+  completed = 'completed'
 }
 
 @Component({
@@ -20,7 +20,7 @@ export class TodoComponent implements OnInit {
   private enumFilter: typeof Enum = Enum;
 
   isCreate = false;
-  filter = '';
+  arg: string;
 
   public tasks: TaskModel[] = [];
 
@@ -31,7 +31,6 @@ export class TodoComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.enumFilter);
     this.getTasks();
     if (localStorage.getItem('tasks') != null && !this.tasks.length) {
       this.localstorageService.createLocalTasks();
@@ -55,9 +54,9 @@ export class TodoComponent implements OnInit {
     this.todoService.findToDoForEdit(this.findToDo(taskId));
   }
 
-  public toggle(task: TaskModel, taskIndex: number): void {
+  public toggle(task: TaskModel): void {
     task.complete = !task.complete;
-    const findIndex = this.tasks.findIndex(todo => todo.id === this.tasks[taskIndex].id);
+    const findIndex = this.tasks.findIndex(todo => todo.id === task.id);
     this.localstorageService.toggleLocal(task, findIndex);
   }
 
@@ -75,19 +74,6 @@ export class TodoComponent implements OnInit {
   private deleteTask(taskId): void {
     this.localstorageService.deleteTask(this.findToDo(taskId));
     this.todoService.deleteTask(this.findToDo(taskId));
-  }
-
-  public taskFiltered(): TaskModel[] {
-    switch (this.filter) {
-      case 'all':
-        return this.tasks;
-      case 'active':
-        return this.tasks.filter(task => !task.complete);
-      case 'completed':
-        return this.tasks.filter(task => task.complete);
-      default:
-        return this.tasks;
-    }
   }
 
   getTasks(): void {
