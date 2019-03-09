@@ -14,12 +14,13 @@ export class TaskEditComponent implements OnInit, OnChanges {
   description: string;
 
   public form: FormGroup = new FormGroup({
-    task: new FormControl(null, this.emptyValidator),
-    description: new FormControl(null, this.emptyValidator)
+    task: new FormControl('', this.emptyValidator),
+    description: new FormControl()
   });
 
   constructor(private todoService: TodoService,
-              private localstorageService: LocalstorageService) { }
+              private localstorageService: LocalstorageService) {
+  }
 
   ngOnInit() {
     this.currentTask();

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
+import { WeatherModel } from "../models/weather.model";
 
 
 @Injectable({
@@ -16,17 +17,17 @@ export class WeatherApiService {
   constructor(private http: HttpClient) {}
 
 
-  public searchWeatherDataByCity(cityName: string): Observable<object> {
+  public searchWeatherDataByCity(cityName: string): Observable<WeatherModel> {
     return this.http.get(`${this.url}q=${cityName}&APPID=${this.apiKey}&units=metric`).pipe(
       catchError(err => throwError(('Getting weather error!'))),
-      map(response => response)
+      map(response => new WeatherModel(response))
     );
   }
 
-  public searchWeatherDataByCoord(lat: number, lon: number): Observable<object> {
+  public searchWeatherDataByCoord(lat: number, lon: number): Observable<WeatherModel> {
     return this.http.get(`${this.url}lat=${lat}&lon=${lon}&APPID=${this.apiKey}&units=metric`).pipe(
       catchError(err => throwError(('Getting weather error!'))),
-      map(response => response)
+      map(response => new WeatherModel(response))
     );
   }
 }

@@ -6,7 +6,7 @@ import { TaskModel } from '../models/todo.model';
 })
 export class TasksFilterPipe implements PipeTransform {
 
-  transform(tasks: Array<TaskModel>, arg?: string): any {
+  transform(tasks: TaskModel[], arg?: string): any {
     switch (arg) {
       case 'all':
         return tasks;

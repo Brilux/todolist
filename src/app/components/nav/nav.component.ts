@@ -12,7 +12,7 @@ import { WeatherModel } from '../../models/weather.model';
 export class NavComponent implements OnInit {
 
   city: string;
-  temp: number;
+  temp: string;
   toggle: boolean;
   private defaultCity = 'Cherkasy';
 
@@ -24,15 +24,12 @@ export class NavComponent implements OnInit {
     this.getWeather();
     this.weatherService.getWeatherInfoSubscription().subscribe(weatherInfo => {
       this.city = weatherInfo.city;
-      this.temp = weatherInfo.temperature;
+      this.temp = weatherInfo.getTemperature;
     });
   }
 
-  private newWeatherInfo(response) {
-    const newWeatherInfo = new WeatherModel();
-    newWeatherInfo.city = response.name;
-    newWeatherInfo.temperature = response.main.temp.toFixed();
-    this.weatherService.changeWeatherInfo(newWeatherInfo);
+  private newWeatherInfo(newWeather) {
+    this.weatherService.changeWeatherInfo(newWeather);
   }
 
   private updateWeatherInfo(response) {
@@ -54,13 +51,13 @@ export class NavComponent implements OnInit {
   }
 
   private getWeather() {
-    if (localStorage.getItem('weather') != null) {
-      const localResponse = JSON.parse(localStorage.getItem('weather'));
+    if (localStorage.getItem('weather')) {
+      const localResponse = new WeatherModel(JSON.parse(localStorage.getItem('weather')));
       this.newWeatherInfo(localResponse);
     } else {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        const crd = pos.coords;
-        this.takeWeatherCoord(crd.latitude, crd.longitude);
+      navigator.geolocation.getCurrentPosition((position) => {
+        const coordinates = position.coords;
+        this.takeWeatherCoord(coordinates.latitude, coordinates.longitude);
       }, this.error.bind(this));
     }
   }

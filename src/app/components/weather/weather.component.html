@@ -18,19 +18,19 @@
       <button class="city-button" mat-raised-button color="primary" [disabled]="!cityInput.valid">Find city</button>
     </div>
   </form>
-  <div class="widget-container" *ngIf="city">
-    <h1 class="widget-city">City: {{city}}</h1>
+  <div class="widget-container" *ngIf="weather.city">
+    <h1 class="widget-city">City: {{weather.city}}</h1>
     <div class="temperature-container">
-      <p>Temperature: {{temp}} °C</p>
+      <p>Temperature: {{weather.getTemperature}} °C</p>
       <div class="temperature-info">
-        <p>Min temperature: {{tempMin}} °C</p>
-        <p>Max temperature: {{tempMax}} °C</p>
+        <p>Min temperature: {{weather.getTempMin}} °C</p>
+        <p>Max temperature: {{weather.getTempMax}} °C</p>
       </div>
     </div>
-    <h2>{{weatherMain}}</h2>
-    <p>{{weatherDesc}}</p>
+    <h2>{{weather.weatherMain}}</h2>
+    <p>{{weather.weatherDesc}}</p>
     <div>
-      <img src="{{icon}}" alt="icon">
+      <img src="{{weather.getIcon}}" alt="icon">
     </div>
   </div>
 </div>
