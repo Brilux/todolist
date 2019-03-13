@@ -19,8 +19,7 @@ export class TaskEditComponent implements OnInit, OnChanges {
   });
 
   constructor(private todoService: TodoService,
-              private localstorageService: LocalstorageService) {
-  }
+              private localstorageService: LocalstorageService) {}
 
   ngOnInit() {
     this.currentTask();

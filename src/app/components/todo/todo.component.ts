@@ -27,8 +27,7 @@ export class TodoComponent implements OnInit {
   public taskInput = new FormControl(null, this.emptyValidator);
 
   constructor(private todoService: TodoService,
-              private localstorageService: LocalstorageService) {
-  }
+              private localstorageService: LocalstorageService) {}
 
   ngOnInit() {
     this.getTasks();

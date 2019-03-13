@@ -17,8 +17,7 @@ export class NavComponent implements OnInit {
   private defaultCity = 'Cherkasy';
 
   constructor(private weatherApiService: WeatherApiService,
-              private weatherService: WeatherService) {
-  }
+              private weatherService: WeatherService) {}
 
   ngOnInit() {
     this.getWeather();
