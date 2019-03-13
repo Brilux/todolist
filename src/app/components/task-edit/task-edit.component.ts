@@ -1,6 +1,6 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { TodoService } from '../../services/todo.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { LocalstorageService } from '../../services/localstorage.service';
 
 @Component({
@@ -10,33 +10,47 @@ import { LocalstorageService } from '../../services/localstorage.service';
 })
 export class TaskEditComponent implements OnInit, OnChanges {
 
-  constructor(private todoService: TodoService, private localstorageService: LocalstorageService) {
-  }
+  public title: string;
+  public description: string;
 
   public form: FormGroup = new FormGroup({
-    task: new FormControl(null, Validators.required),
+    task: new FormControl('', this.emptyValidator),
     description: new FormControl()
   });
 
-  public editTask(): void {
-    const time = new Date();
-    const day = time.getDate();
-    const month = time.getMonth() + 1;
-    const hour = time.getHours();
-    const minutes = time.getMinutes();
+  constructor(private todoService: TodoService,
+              private localstorageService: LocalstorageService) {}
+
+  ngOnInit() {
+    this.currentTask();
+    this.todoService.getTasks().subscribe(tasks => tasks);
+  }
+
+  private currentTask() {
     const tasks = JSON.parse(localStorage.getItem('tasks'));
+    const indexForEdit = tasks.findIndex(todo => todo.id === this.todoService.todoForEdit.id);
+    this.title = tasks[indexForEdit].title;
+    this.description = tasks[indexForEdit].description || '';
+  }
+
+  private emptyValidator(control: FormControl) {
+    if ((control.value || '').trim().length === 0) {
+      return {
+        'empty': true
+      };
+    }
+  }
+
+  public editTask(): void {
+    const createId: number = Date.now();
     const editedTask = {
+      id: createId,
       title: this.form.value.task,
-      description: this.form.value.description || tasks[this.todoService.taskIndexForEdit].description || '',
-      complete: false,
-      date: `${day} / ${month} / ${hour}:${minutes}`
+      description: this.form.value.description,
+      complete: false
     };
     this.todoService.editTask(editedTask);
     this.localstorageService.editTask(editedTask);
-  }
-
-  ngOnInit() {
-    this.todoService.getTasks().subscribe(tasks => tasks);
   }
 
   ngOnChanges() {

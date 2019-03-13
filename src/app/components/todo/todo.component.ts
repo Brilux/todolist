@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Task } from '../../models/todo';
+import { FormControl } from '@angular/forms';
+import { TaskModel } from '../../models/todo.model';
 import { TodoService } from '../../services/todo.service';
 import { LocalstorageService } from '../../services/localstorage.service';
+
+export enum Enum {
+  all = 'all',
+  active = 'active',
+  completed = 'completed'
+}
 
 @Component({
   selector: 'app-todo',
@@ -11,70 +17,65 @@ import { LocalstorageService } from '../../services/localstorage.service';
 })
 export class TodoComponent implements OnInit {
 
-  constructor(private todoService: TodoService, private localstorageService: LocalstorageService) {
-  }
+  public enumFilter: typeof Enum = Enum;
 
-  isCreate = false;
-  filter = '';
+  public isCreate = false;
+  public arg: string;
 
-  public tasks: Task[] = [];
+  public tasks: TaskModel[] = [];
 
-  public form: FormGroup = new FormGroup({
-    task: new FormControl(null, Validators.required),
-    description: new FormControl()
-  });
+  public taskInput = new FormControl(null, this.emptyValidator);
 
-  private indexForEdit(taskIndex) {
-    this.todoService.indexForEdit(taskIndex);
-  }
-
-  private toggle(task: Task, taskIndex: number): void {
-    task.complete = !task.complete;
-    this.localstorageService.toggleLocal(task, taskIndex);
-  }
-
-  private createTask(): void {
-    const time = new Date();
-    const day = time.getDate();
-    const month = time.getMonth() + 1;
-    const hour = time.getHours();
-    const minutes = time.getMinutes();
-    this.todoService.addTask({
-      title: this.form.value.task,
-      description: this.form.value.description || '',
-      complete: false,
-      date: `${day} / ${month} / ${hour}:${minutes}`
-    });
-    this.localstorageService.addTask();
-    this.form.reset();
-  }
-
-  private deleteTask(index: number): void {
-    this.todoService.deleteTask(index);
-    this.localstorageService.deleteTask(index);
-  }
-
-  public taskFiltered(): Task[] {
-    switch (this.filter) {
-      case 'all':
-        return this.tasks;
-      case 'active':
-        return this.tasks.filter(task => !task.complete);
-      case 'completed':
-        return this.tasks.filter(task => task.complete);
-      default:
-        return this.tasks;
-    }
-  }
+  constructor(private todoService: TodoService,
+              private localstorageService: LocalstorageService) {}
 
   ngOnInit() {
     this.getTasks();
-    if (localStorage.getItem('tasks') != null && !this.tasks.length) {
+    if (localStorage.getItem('tasks') && !this.tasks.length) {
       this.localstorageService.createLocalTasks();
     }
   }
 
-  getTasks(): void {
+  private emptyValidator(control: FormControl) {
+    if ((control.value || '').trim().length === 0) {
+      return {
+        'empty': true
+      };
+    }
+  }
+
+  private findToDo(taskId) {
+    return this.tasks.find(todo => todo.id === taskId);
+  }
+
+  private findToDoForEdit(taskId) {
+    this.localstorageService.findToDoForEdit(this.findToDo(taskId));
+    this.todoService.findToDoForEdit(this.findToDo(taskId));
+  }
+
+  public toggle(task: TaskModel): void {
+    task.complete = !task.complete;
+    const findIndex = this.tasks.findIndex(todo => todo.id === task.id);
+    this.localstorageService.toggleLocal(task, findIndex);
+  }
+
+  public createTask(): void {
+    const createId: number = Date.now();
+    this.todoService.addTask({
+      id: createId,
+      title: this.taskInput.value,
+      complete: false
+    });
+    this.localstorageService.addTask();
+    this.taskInput.reset();
+  }
+
+  private deleteTask(taskId): void {
+    this.localstorageService.deleteTask(this.findToDo(taskId));
+    this.todoService.deleteTask(this.findToDo(taskId));
+  }
+
+  public getTasks(): void {
     this.todoService.getTasks().subscribe(tasks => this.tasks = tasks);
   }
 }

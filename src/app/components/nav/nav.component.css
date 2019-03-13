@@ -1,0 +1,22 @@
+.nav-container {
+  background-color: white;
+  min-height: 50px;
+}
+
+.buttons-container {
+  padding-top: 5px;
+  display: flex;
+  justify-content: space-around;
+}
+
+@media screen and (min-width: 576px) {
+
+}
+
+@media screen and (min-width: 768px) {
+
+}
+
+@media screen and (min-width: 992px) {
+
+}

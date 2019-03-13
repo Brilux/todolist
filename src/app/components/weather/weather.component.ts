@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { WeatherApiService } from '../../services/weather-api.service';
+import { FormControl } from '@angular/forms';
 import { WeatherService } from '../../services/weather.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { WeatherModel } from '../../models/weather.model';
+import { Observable } from 'rxjs';
+import { CityModel } from '../../models/city.model';
+import { map, startWith } from 'rxjs/operators';
+import { CitiesCompleteService } from '../../services/cities-complete.service';
 
 @Component({
   selector: 'app-weather',
@@ -9,88 +15,70 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class WeatherComponent implements OnInit {
 
+  public weather: WeatherModel = new WeatherModel();
+  public cityToggle: boolean;
 
-  constructor(private weatherService: WeatherService) {
-  }
+  public cityInput = new FormControl('', this.emptyValidator);
 
-  city: string;
-  temp: string;
-  cityToggle: boolean;
-  coordToggle: boolean;
-  lat: number;
-  lon: number;
+  public filteredCities: Observable<CityModel[]>;
 
-  public cityForm: FormGroup = new FormGroup({
-    city: new FormControl(null, Validators.required),
-  });
+  public cities: CityModel[];
 
-  public coordForm: FormGroup = new FormGroup({
-    lat: new FormControl(null, Validators.required),
-    lon: new FormControl(null, Validators.required),
-  });
-
-
-  public toggleCity(): void {
-    if (this.coordToggle === true) {
-      this.coordToggle = !this.coordToggle;
-      this.cityToggle = !this.cityToggle;
-    } else {
-      this.cityToggle = !this.cityToggle;
-    }
-  }
-
-  public toggleLocation(): void {
-    if (this.cityToggle === true) {
-      this.cityToggle = !this.cityToggle;
-      this.coordToggle = !this.coordToggle;
-    } else {
-      this.coordToggle = !this.coordToggle;
-    }
-  }
-
-  private saveCity(): void {
-    this.city = this.cityForm.value.city;
-    this.takeWeatherCity(this.city);
-  }
-
-  private saveCoord(): void {
-    this.lat = this.coordForm.value.lat;
-    this.lon = this.coordForm.value.lon;
-    this.takeWeatherCoord(this.lat, this.lon);
-  }
-
-  private takeWeatherCity(city: string): void {
-    this.weatherService.searchWeatherDataByCity(city).subscribe(response => {
-      this.city = response.name;
-      this.temp = response.main.temp.toFixed();
-      localStorage.setItem('weather', JSON.stringify(response));
-    });
-  }
-
-  private takeWeatherCoord(lat: number, lon: number): void {
-    this.weatherService.searchWeatherDataByCoord(lat, lon).subscribe(response => {
-      this.city = response.name;
-      this.temp = response.main.temp.toFixed();
-      localStorage.setItem('weather', JSON.stringify(response));
-      localStorage.setItem('coord', JSON.stringify([lat, lon]));
-    });
-  }
-
-  private error(err): void {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
+  constructor(private weatherApiService: WeatherApiService,
+              private weatherService: WeatherService,
+              private citiesCompleteService: CitiesCompleteService) {
+    this.filteredCities = this.cityInput.valueChanges
+      .pipe(
+        startWith(''),
+        map(city => city ? this.cityFilter(city) : null)
+      );
   }
 
   ngOnInit() {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const crd = pos.coords;
-      localStorage.setItem('coord', JSON.stringify([crd.latitude, crd.longitude]));
-    }, this.error.bind(this));
-    if (localStorage.getItem('weather') != null || localStorage.getItem('coord') != null) {
-      const localResponse = JSON.parse(localStorage.getItem('weather'));
-      this.city = localResponse.name;
-      this.temp = localResponse.main.temp.toFixed();
-    } else {
-      this.takeWeatherCity('Cherkasy');
+    this.citiesCompleteService.getCities().subscribe(city => this.cities = city);
+    if (localStorage.getItem('weather')) {
+      const localResponse = new WeatherModel(JSON.parse(localStorage.getItem('weather')));
+      this.createWidget(localResponse);
     }
+  }
+
+  private emptyValidator(control: FormControl) {
+    if ((control.value || '').trim().length === 0) {
+      return {
+        'empty': true
+      };
+    } else if (control.value.length <= 2) {
+      return {
+        'short': true
+      };
+    }
+  }
+
+  private cityFilter(city: string): CityModel[] {
+    const filterCity = city.toLowerCase();
+    return this.cities.filter(filteredCities => filteredCities.name.toLowerCase().indexOf(filterCity) === 0).slice(0, 50);
+  }
+
+  public saveCity(): void {
+    this.weather.city = this.cityInput.value;
+    this.takeWeatherCity(this.weather.city);
+    this.cityInput.reset();
+  }
+
+  private takeWeatherCity(city: string): void {
+    this.weatherApiService.searchWeatherDataByCity(city).subscribe(newWeather => {
+      this.createWidget(newWeather);
+      localStorage.setItem('weather', JSON.stringify(newWeather));
+    });
+  }
+
+  private createWidget(newWeather: WeatherModel) {
+    this.weather = newWeather;
+    this.newWeatherInfo(newWeather);
+  }
+
+  private newWeatherInfo(newWeather: WeatherModel) {
+    const newWeatherInfo = new WeatherModel(newWeather);
+    this.weatherService.changeWeatherInfo(newWeatherInfo);
   }
 }
