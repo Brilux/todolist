@@ -1,12 +1,12 @@
 <div class="task-edit-container">
   <form class="form-container" [formGroup]="form">
     <mat-form-field>
-      <input matInput formControlName="task" placeholder="Enter the title of ToDo:">
+      <input matInput formControlName="task" placeholder="Enter the title of ToDo:" [value]="title">
     </mat-form-field>
     <label>
       <mat-form-field style="display: block">
         <textarea matInput formControlName="description"
-                  placeholder="Enter description (not necessary)"></textarea>
+                  placeholder="Enter description (not necessary)" [value]="description"></textarea>
       </mat-form-field>
     </label>
   </form>

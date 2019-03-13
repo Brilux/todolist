@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task } from '../models/todo';
+import { TaskModel } from '../models/todo.model';
 import { TodoService } from './todo.service';
 
 @Injectable({
@@ -7,7 +7,13 @@ import { TodoService } from './todo.service';
 })
 export class LocalstorageService {
 
-  constructor(private todoService: TodoService) { }
+  constructor(private todoService: TodoService) {}
+
+  private todoForEdit: any;
+
+  public findToDoForEdit(todoForEdit) {
+    return this.todoForEdit = todoForEdit;
+  }
 
   private getTasks() {
     return JSON.parse(localStorage.getItem('tasks'));
@@ -18,14 +24,14 @@ export class LocalstorageService {
   }
 
   public createLocalTasks(): void {
-    const tasks: Task[] = this.getTasks();
+    const tasks: TaskModel[] = this.getTasks();
     for (const key of tasks) {
       this.todoService.tasks.push(key);
     }
   }
 
-  public toggleLocal(task: Task, taskIndex: number): void {
-    const tasks: Task[] = this.getTasks();
+  public toggleLocal(task: TaskModel, taskIndex: number): void {
+    const tasks: TaskModel[] = this.getTasks();
     tasks[taskIndex].complete = !tasks[taskIndex].complete;
     this.setTasks(tasks);
   }
@@ -34,15 +40,17 @@ export class LocalstorageService {
     this.setTasks(this.todoService.tasks);
   }
 
-  public deleteTask(taskIndex: number): void {
-    const tasks: Task[] = this.getTasks();
-    tasks.splice(taskIndex, 1);
+  public deleteTask(taskId): void {
+    const tasks: TaskModel[] = this.getTasks();
+    const indexForDel = tasks.findIndex(todo => todo.id === taskId.id);
+    tasks.splice(indexForDel, 1);
     this.setTasks(tasks);
   }
 
-  public editTask(task: Task): void {
-    const tasks: Task[] = this.getTasks();
-    tasks.splice(this.todoService.taskIndexForEdit, 1, task);
+  public editTask(task: TaskModel): void {
+    const tasks: TaskModel[] = this.getTasks();
+    const indexForDel = tasks.findIndex(todo => todo.id === this.todoForEdit.id);
+    tasks.splice(indexForDel, 1, task);
     this.setTasks(tasks);
   }
 }

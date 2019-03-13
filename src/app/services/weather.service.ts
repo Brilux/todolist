@@ -1,44 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-
+import { Observable, BehaviorSubject } from 'rxjs';
+import { WeatherModel } from '../models/weather.model';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class WeatherService {
 
-  apiKey = 'e38fa7171a76cd46d84400b96b366241';
-  url = 'http://api.openweathermap.org/data/2.5/weather?';
+  private weatherInfo = new BehaviorSubject<WeatherModel>(new WeatherModel());
 
-  constructor(private http: HttpClient) {}
-
-
-  public searchWeatherDataByCity(cityName: string): Observable<any> {
-    return this.http.get(`${this.url}q=${cityName}&APPID=${this.apiKey}&units=metric`).pipe(
-      map(response => {
-        if (!response) {
-          throw new Error('Getting weather error!');
-        } else {
-          return response;
-        }
-      }),
-    );
+  public changeWeatherInfo(project: WeatherModel) {
+    this.weatherInfo.next(project);
   }
 
-  public searchWeatherDataByCoord(lat: number, lon: number): Observable<any> {
-    return this.http.get(`${this.url}lat=${lat}&lon=${lon}&APPID=${this.apiKey}&units=metric`).pipe(
-      map(response => {
-        if (!response) {
-          throw new Error('Getting weather error!');
-        } else {
-          return response;
-        }
-      }),
-    );
+  public getWeatherInfoSubscription(): Observable<WeatherModel> {
+    return this.weatherInfo.asObservable();
   }
-
 }
-

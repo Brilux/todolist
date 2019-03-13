@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task } from '../models/todo';
+import { TaskModel } from '../models/todo.model';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
@@ -7,30 +7,31 @@ import { Observable, of } from 'rxjs';
 })
 export class TodoService {
 
-  constructor() {
+  constructor() {}
+
+  public tasks: TaskModel[] = [];
+
+  todoForEdit: TaskModel;
+
+  public findToDoForEdit(todoForEdit) {
+    return this.todoForEdit = todoForEdit;
   }
 
-  public tasks: Task[] = [];
-
-  taskIndexForEdit: number;
-
-  public indexForEdit(taskIndex) {
-    return this.taskIndexForEdit = taskIndex;
-  }
-
-  public addTask(task: Task): void {
+  public addTask(task: TaskModel): void {
     this.tasks.unshift(task);
   }
 
-  public deleteTask(taskIndex: number): void {
-    this.tasks.splice(taskIndex, 1);
+  public deleteTask(taskId): void {
+    const indexForDel = this.tasks.findIndex(todo => todo.id === taskId.id);
+    this.tasks.splice(indexForDel, 1);
   }
 
-  public editTask(task: Task): void {
-    this.tasks.splice(this.taskIndexForEdit, 1, task);
+  public editTask(task: TaskModel): void {
+    const indexForDel = this.tasks.findIndex(todo => todo.id === this.todoForEdit.id);
+    this.tasks.splice(indexForDel, 1, task);
   }
 
-  getTasks(): Observable<Task[]> {
+  public getTasks(): Observable<TaskModel[]> {
     return of(this.tasks);
   }
 }

@@ -1,49 +1,50 @@
-<div class="wrapper">
-  <p class="welcome-title" *ngIf="!tasks.length">
-    Hi! Welcome to your ToDo!
-    You don't have any Todos. You can add it using button
-  </p>
-  <div class="button-container">
-    <button class="create-button" mat-raised-button color="primary" (click)="isCreate = !isCreate">Create new ToDo
-    </button>
-  </div>
-  <form class="form-container" *ngIf="isCreate" [formGroup]="form" (ngSubmit)="createTask()">
-    <mat-form-field>
-      <input matInput formControlName="task" placeholder="Enter the title of ToDo">
-    </mat-form-field>
-    <mat-form-field>
-        <textarea matInput formControlName="description"
-                  placeholder="Enter description (not necessary)"></textarea>
-    </mat-form-field>
+<div class="todo-component-container">
+  <div class="wrapper">
+    <p class="welcome-title" *ngIf="!tasks.length">
+      Hi! Welcome to your ToDo!
+      You don't have any Todos. You can add it using button
+    </p>
     <div class="button-container">
-      <button class="create-button" mat-raised-button color="primary" [disabled]="!form.valid">Create ToDo</button>
+      <button class="create-button" mat-raised-button color="primary" (click)="isCreate = !isCreate">Create new ToDo
+      </button>
     </div>
-  </form>
-</div>
-
-<div>
-  <ul class="task-list-container">
-    <mat-card class="task-list" *ngFor="let task of taskFiltered(); let taskIndex = index"
-              [class.complete]="task.complete">
-      <div class="task-icon-container">
-        <button class="task-icon" mat-icon-button *ngIf="!task.complete" [routerLink]="[ '/task-edit' ]"
-                (click)="indexForEdit(taskIndex)">
-          <mat-icon>border_color</mat-icon>
+    <form class="form-container" *ngIf="isCreate" (ngSubmit)="createTask()">
+      <mat-form-field>
+        <input matInput [formControl]="taskInput" placeholder="Enter the title of ToDo">
+      </mat-form-field>
+      <mat-error *ngIf="taskInput.hasError('empty') && taskInput.touched">Title can't be empty!!!</mat-error>
+      <div class="button-container">
+        <button class="create-button" mat-raised-button color="primary" [disabled]="!taskInput.valid">Create ToDo
         </button>
-        <button class="task-icon" mat-icon-button (click)="deleteTask(taskIndex)">
+      </div>
+    </form>
+  </div>
+
+  <div>
+    <mat-form-field class="task-filter-container" *ngIf="tasks.length">
+      <mat-select placeholder="ToDo Filter">
+        <mat-option value="all" (click)="arg = enumFilter.all">All</mat-option>
+        <mat-option value="active" (click)="arg = enumFilter.active">Active</mat-option>
+        <mat-option value="completed" (click)="arg = enumFilter.completed">Completed</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <ul class="task-list-container">
+      <mat-card class="task-list" *ngFor="let task of tasks | tasksFilter:arg"
+                [class.complete]="task.complete">
+        <mat-checkbox color="primary" type="checkbox" class="task-checkbox" (change)="toggle(task)"
+                      [checked]="task.complete"></mat-checkbox>
+        <div class="task-item-container" (click)="findToDoForEdit(task.id)"
+             [routerLink]="task.complete ? null : [ '/task-edit' ]">
+          <span class="task-item-title">{{task.title}}</span>
+          <span class="task-item-description">{{task.description}}</span>
+          <span class="task-item-time">Time: {{task.id | date: 'd LLL HH:mm'}}</span>
+        </div>
+        <button class="task-icon" mat-icon-button (click)="deleteTask(task.id)">
           <mat-icon>clear</mat-icon>
         </button>
-      </div>
-      <div class="task-item-container" (click)="toggle(task, taskIndex)">
-        <span class="task-item-title">{{task.title}}</span>
-        <span class="task-item-description">{{task.description}}</span>
-        <span class="task-item-time">Time: {{task.date}}</span>
-      </div>
-    </mat-card>
-  </ul>
-  <div class="task-filter-container" *ngIf="tasks.length">
-    <button mat-raised-button color="primary" (click)="filter='all'">All</button>
-    <button mat-raised-button color="primary" (click)="filter='active'">Active</button>
-    <button mat-raised-button color="primary" (click)="filter='completed'">Completed</button>
+      </mat-card>
+    </ul>
   </div>
 </div>
+

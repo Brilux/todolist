@@ -1,1 +1,7 @@
-<app-weather></app-weather>
+<div class="nav-container">
+<div class="buttons-container">
+  <button mat-raised-button color="primary" (click)="toggle = false" [routerLink]=" [ '/todo' ]">ToDo</button>
+  <button mat-raised-button color="primary" (click)="toggle = true" [routerLink]=" [ '/weather' ]">{{city}} {{temp}} °C</button>
+</div>
+</div>
+
