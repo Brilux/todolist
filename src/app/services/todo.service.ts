@@ -7,8 +7,7 @@ import { Observable, of } from 'rxjs';
 })
 export class TodoService {
 
-  constructor() {
-  }
+  constructor() {}
 
   public tasks: TaskModel[] = [];
 
@@ -32,7 +31,7 @@ export class TodoService {
     this.tasks.splice(indexForDel, 1, task);
   }
 
-  getTasks(): Observable<TaskModel[]> {
+  public getTasks(): Observable<TaskModel[]> {
     return of(this.tasks);
   }
 }

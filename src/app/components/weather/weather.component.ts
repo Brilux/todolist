@@ -15,14 +15,14 @@ import { CitiesCompleteService } from '../../services/cities-complete.service';
 })
 export class WeatherComponent implements OnInit {
 
-  weather: WeatherModel = new WeatherModel();
-  cityToggle: boolean;
+  public weather: WeatherModel = new WeatherModel();
+  public cityToggle: boolean;
 
-  cityInput = new FormControl('', this.emptyValidator);
+  public cityInput = new FormControl('', this.emptyValidator);
 
-  filteredCities: Observable<CityModel[]>;
+  public filteredCities: Observable<CityModel[]>;
 
-  cities: CityModel[];
+  public cities: CityModel[];
 
   constructor(private weatherApiService: WeatherApiService,
               private weatherService: WeatherService,

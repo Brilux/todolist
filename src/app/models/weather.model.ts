@@ -20,7 +20,7 @@ export class WeatherModel {
   }
 
   get getTemperature(): string {
-    return this.temperature.toFixed();
+    return this.temperature ?  this.temperature.toFixed() : '';
   }
 
   get getTempMin(): number {

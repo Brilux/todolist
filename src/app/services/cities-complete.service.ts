@@ -8,10 +8,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CitiesCompleteService {
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
-  getCities(): Observable<any> {
+  public getCities(): Observable<any> {
     return this.http.get('../../assets/cities.json').pipe(
       catchError(err => throwError(('Getting cities error!'))),
       map(response => response)

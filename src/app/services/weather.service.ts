@@ -7,13 +7,13 @@ import { WeatherModel } from '../models/weather.model';
 })
 export class WeatherService {
 
-  weatherInfo = new BehaviorSubject<WeatherModel>(new WeatherModel());
+  private weatherInfo = new BehaviorSubject<WeatherModel>(new WeatherModel());
 
-  changeWeatherInfo(project: WeatherModel) {
+  public changeWeatherInfo(project: WeatherModel) {
     this.weatherInfo.next(project);
   }
 
-  getWeatherInfoSubscription(): Observable<WeatherModel> {
+  public getWeatherInfoSubscription(): Observable<WeatherModel> {
     return this.weatherInfo.asObservable();
   }
 }

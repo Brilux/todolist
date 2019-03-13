@@ -10,8 +10,8 @@ import { LocalstorageService } from '../../services/localstorage.service';
 })
 export class TaskEditComponent implements OnInit, OnChanges {
 
-  title: string;
-  description: string;
+  public title: string;
+  public description: string;
 
   public form: FormGroup = new FormGroup({
     task: new FormControl('', this.emptyValidator),

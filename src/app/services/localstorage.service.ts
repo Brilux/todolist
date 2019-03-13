@@ -7,9 +7,9 @@ import { TodoService } from './todo.service';
 })
 export class LocalstorageService {
 
-  constructor(private todoService: TodoService) { }
+  constructor(private todoService: TodoService) {}
 
-  todoForEdit: any;
+  private todoForEdit: any;
 
   public findToDoForEdit(todoForEdit) {
     return this.todoForEdit = todoForEdit;
