@@ -11,8 +11,10 @@
 }
 
 .task-checkbox {
-  margin: 0 auto;
+  /*margin: 0 auto;*/
   align-self: center;
+  position: absolute;
+  left: 1%;
 }
 
 .form-container {
@@ -60,8 +62,9 @@
 }
 
 .task-icon {
-  margin: 0 auto;
   align-self: center;
+  position: absolute;
+  right: 1%;
 }
 
 .task-item-title {
