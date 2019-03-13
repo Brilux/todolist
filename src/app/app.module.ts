@@ -12,7 +12,8 @@ import {
   MatCheckboxModule,
   MatFormFieldModule,
   MatIconModule,
-  MatInputModule
+  MatInputModule,
+  MatSelectModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -34,16 +35,17 @@ import { TasksFilterPipe } from './pipes/tasks-filter.pipe';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    HttpClientModule,
     ReactiveFormsModule,
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
-    HttpClientModule,
     MatCheckboxModule,
     MatAutocompleteModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

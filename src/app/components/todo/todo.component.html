@@ -21,11 +21,14 @@
   </div>
 
   <div>
-    <div class="task-filter-container" *ngIf="tasks.length">
-      <button mat-raised-button color="primary" (click)="arg = enumFilter.all">All</button>
-      <button mat-raised-button color="primary" (click)="arg = enumFilter.active">Active</button>
-      <button mat-raised-button color="primary" (click)="arg = enumFilter.completed">Completed</button>
-    </div>
+    <mat-form-field class="task-filter-container" *ngIf="tasks.length">
+      <mat-select placeholder="ToDo Filter">
+        <mat-option value="all" (click)="arg = enumFilter.all">All</mat-option>
+        <mat-option value="active" (click)="arg = enumFilter.active">Active</mat-option>
+        <mat-option value="completed" (click)="arg = enumFilter.completed">Completed</mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <ul class="task-list-container">
       <mat-card class="task-list" *ngFor="let task of tasks | tasksFilter:arg"
                 [class.complete]="task.complete">

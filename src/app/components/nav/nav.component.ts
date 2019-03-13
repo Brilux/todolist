@@ -11,9 +11,9 @@ import { WeatherModel } from '../../models/weather.model';
 })
 export class NavComponent implements OnInit {
 
-  city: string;
-  temp: string;
-  toggle: boolean;
+  public city: string;
+  public temp: string;
+  public toggle: boolean;
   private defaultCity = 'Cherkasy';
 
   constructor(private weatherApiService: WeatherApiService,

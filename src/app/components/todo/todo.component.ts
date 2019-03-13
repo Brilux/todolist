@@ -17,14 +17,14 @@ export enum Enum {
 })
 export class TodoComponent implements OnInit {
 
-  private enumFilter: typeof Enum = Enum;
+  public enumFilter: typeof Enum = Enum;
 
-  isCreate = false;
-  arg: string;
+  public isCreate = false;
+  public arg: string;
 
   public tasks: TaskModel[] = [];
 
-  taskInput = new FormControl(null, this.emptyValidator);
+  public taskInput = new FormControl(null, this.emptyValidator);
 
   constructor(private todoService: TodoService,
               private localstorageService: LocalstorageService) {
@@ -32,7 +32,7 @@ export class TodoComponent implements OnInit {
 
   ngOnInit() {
     this.getTasks();
-    if (localStorage.getItem('tasks') != null && !this.tasks.length) {
+    if (localStorage.getItem('tasks') && !this.tasks.length) {
       this.localstorageService.createLocalTasks();
     }
   }
@@ -76,7 +76,7 @@ export class TodoComponent implements OnInit {
     this.todoService.deleteTask(this.findToDo(taskId));
   }
 
-  getTasks(): void {
+  public getTasks(): void {
     this.todoService.getTasks().subscribe(tasks => this.tasks = tasks);
   }
 }
