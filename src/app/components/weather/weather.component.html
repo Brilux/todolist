@@ -1,8 +1,5 @@
 <div class="weather-component-container">
-  <div class="weather-buttons">
-    <button mat-raised-button color="primary" (click)="cityToggle = !cityToggle">Search city</button>
-  </div>
-  <form class="form-container" *ngIf="cityToggle" (ngSubmit)="saveCity()">
+  <form class="form-container" (ngSubmit)="saveCity()">
     <mat-form-field>
       <input matInput [formControl]="cityInput" placeholder="Enter the name of City" [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete">
@@ -23,8 +20,8 @@
     <div class="temperature-container">
       <p>Temperature: {{weather.getTemperature}} °C</p>
       <div class="temperature-info">
-        <p>Min temperature: {{weather.getTempMin}} °C</p>
-        <p>Max temperature: {{weather.getTempMax}} °C</p>
+        <p>Min: {{weather.getTempMin}} °C</p>
+        <p>Max: {{weather.getTempMax}} °C</p>
       </div>
     </div>
     <h2>{{weather.weatherMain}}</h2>
