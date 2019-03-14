@@ -1,7 +1,7 @@
 <div class="weather-component-container">
   <form class="form-container" (ngSubmit)="saveCity()">
     <mat-form-field>
-      <input matInput [formControl]="cityInput" placeholder="Enter the name of City" [matAutocomplete]="auto">
+      <input class="weather-button" matInput [formControl]="cityInput" placeholder="Enter the name of City" [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let city of filteredCities | async" [value]="city.name">
           <span>{{city.name}}</span> |
