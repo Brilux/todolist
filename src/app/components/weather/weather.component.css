@@ -22,14 +22,12 @@
 
 .form-container {
   display: flex;
-  flex-direction: column;
   max-width: 300px;
   margin: 0 auto;
 }
 
 .city-button {
-  display: flex;
-  justify-content: center;
+  height: 37px;
 }
 
 .button-container {
@@ -38,6 +36,7 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
 
 @media screen and (min-width: 576px) {
   .weather-component-container {
