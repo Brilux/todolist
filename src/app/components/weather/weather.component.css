@@ -20,23 +20,15 @@
   font-size: 20px;
 }
 
-.weather-buttons {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
 .form-container {
   display: flex;
-  flex-direction: column;
-  margin: 10px;
-  max-width: 1000px;
+  justify-content: center;
+  max-width: 300px;
+  margin: 0 auto;
 }
 
 .city-button {
-  display: flex;
-  justify-content: center;
+  height: 37px;
 }
 
 .button-container {
@@ -45,6 +37,7 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
 
 @media screen and (min-width: 576px) {
   .weather-component-container {
