@@ -1,7 +1,9 @@
 <div class="nav-container">
-<div class="buttons-container">
-  <button mat-raised-button color="primary" (click)="toggle = false" [routerLink]=" [ '/todo' ]">ToDo</button>
-  <button mat-raised-button color="primary" (click)="toggle = true" [routerLink]=" [ '/weather' ]">{{city}} {{temp}} °C</button>
-</div>
+  <div class="nav-item" [routerLink]=" [ '/todo' ]">
+    <p>ToDo</p>
+  </div>
+  <div class="nav-item" [routerLink]=" [ '/weather' ]">
+    <p>{{city}} {{temp}} °C</p>
+  </div>
 </div>
 

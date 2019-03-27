@@ -16,7 +16,6 @@ import { CitiesCompleteService } from '../../services/cities-complete.service';
 export class WeatherComponent implements OnInit {
 
   public weather: WeatherModel = new WeatherModel();
-  public cityToggle: boolean;
 
   public cityInput = new FormControl('', this.emptyValidator);
 

@@ -1,9 +1,12 @@
 <div class="todo-component-container">
   <div class="wrapper">
-    <p class="welcome-title" *ngIf="!tasks.length">
-      Hi! Welcome to your ToDo!
+    <div *ngIf="!tasks.length">
+    <h1 class="welcome-title">
+      Hi! Welcome to your ToDo!</h1>
+    <p class="welcome-description">
       You don't have any Todos. You can add it using button
     </p>
+    </div>
     <div class="button-container">
       <button class="create-button" mat-raised-button color="primary" (click)="isCreate = !isCreate">Create new ToDo
       </button>
